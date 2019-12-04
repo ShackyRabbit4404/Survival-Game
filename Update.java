@@ -6,6 +6,8 @@ public class Update implements Runnable{
         updateTime = ut;
     }
     public void run(){
-        game.update(updateTime);
+        if(game!=null){
+            game.update(updateTime);
+        }
     }
 }

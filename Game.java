@@ -17,11 +17,12 @@ public class Game{
         caveIntensity = ci;
         caveWallThickness = cwt;
         generateWorld(w,h);
-        //num blocks the player can see to the left or right
+        //num blocks the player can see in any direction
         int playerViewRange = 20;
         //blocks per second
         double playerSpeed = 5;
         player = new Player(w/2,h/4,playerViewRange,playerSpeed);
+        keys = new boolean[4];
     }
     public void generateWorld(int w, int h){
         Noise noise = new Noise();
@@ -54,12 +55,11 @@ public class Game{
         if(keys[0])
             player.moveVertically(delay*-1);
         if(keys[1])
-            player.moveHorizontally(delay);
-        if(keys[2])
             player.moveVertically(delay);
+        if(keys[2])
+            player.moveHorizontally(delay);
         if(keys[3])
             player.moveHorizontally(delay*-1);
-        
     }
     public void movingUp(boolean up){
         keys[0] = up;
@@ -68,15 +68,18 @@ public class Game{
         keys[1] = down;
     }
     public void movingRight(boolean right){
-        keys[0] = right;
+        keys[2] = right;
     }
     public void movingLeft(boolean left){
-        keys[0] = left;
+        keys[3] = left;
     }
     public int getWindowNum(){
         return screenNum;
     }
     public int[][] getWorld(){
         return world;
+    }
+    public double[] getPlayerCords(){
+        return player.getCords();
     }
 }

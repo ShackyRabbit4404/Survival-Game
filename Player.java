@@ -14,4 +14,7 @@ public class Player{
     public void moveHorizontally(double delay){
         cords[0] += movementSpeed*delay;
     }
+    public double[] getCords(){
+        return cords;
+    }
 }
