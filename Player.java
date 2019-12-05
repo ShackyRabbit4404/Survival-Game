@@ -8,6 +8,9 @@ public class Player{
         //blocks per second
         movementSpeed = ms;
     }
+    public int getViewRange(){
+        return viewRange;
+    }
     public void moveVertically(double delay){
         cords[1] += movementSpeed*delay;
     }
