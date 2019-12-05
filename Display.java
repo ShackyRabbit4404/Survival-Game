@@ -40,10 +40,10 @@ public class Display extends JComponent{
                 }
             }
             g.setColor(Color.RED);
-            g.fillOval(10,10,10,10);
             g.fillOval((int)(game.getPlayerCords()[0]*(double)scale),(int)(game.getPlayerCords()[1]*(double)scale),scale,scale);
             g.setColor(Color.BLACK);
             g.drawString("X: "+(int)game.getPlayerCords()[0]+" Y: "+(int)game.getPlayerCords()[1],20,20);
+            g.drawString("Seed: "+game.getSeed(),20,40);
         }
         else if(game.getWindowNum() == 1){
             

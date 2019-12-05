@@ -7,6 +7,7 @@ public class Game{
     private double hillIntensity;
     private double caveIntensity;
     private double caveWallThickness;
+    private double seed;
     private Player player;
     //0 = up, 1 = down, 2 = right, 3 = left
     private boolean[] keys;
@@ -20,14 +21,14 @@ public class Game{
         //num blocks the player can see in any direction
         int playerViewRange = 20;
         //blocks per second
-        double playerSpeed = 5;
+        double playerSpeed = 20;
         player = new Player(w/2,h/4,playerViewRange,playerSpeed);
         keys = new boolean[4];
     }
     public void generateWorld(int w, int h){
         Noise noise = new Noise();
         world = new int[w][h];
-        double seed = 1000000*Math.random();
+        seed = 1000000*Math.random();
         System.out.println("Hill Intensity: "+hillIntensity+" Cave Intensity: "+caveIntensity);
         //generates world terrain based on the seed
         for(double x = 0; x < w; x++){
@@ -52,13 +53,13 @@ public class Game{
         }
     }
     public void update(double delay){
-        if(keys[0])
+        if(keys[0] && player.getCords()[1] > 0)
             player.moveVertically(delay*-1);
-        if(keys[1])
+        if(keys[1] && player.getCords()[1] < world[0].length)
             player.moveVertically(delay);
-        if(keys[2])
+        if(keys[2] && player.getCords()[0] < world.length)
             player.moveHorizontally(delay);
-        if(keys[3])
+        if(keys[3] && player.getCords()[0] > 0)
             player.moveHorizontally(delay*-1);
     }
     public void movingUp(boolean up){
@@ -81,5 +82,8 @@ public class Game{
     }
     public double[] getPlayerCords(){
         return player.getCords();
+    }
+    public double getSeed(){
+        return seed;
     }
 }
