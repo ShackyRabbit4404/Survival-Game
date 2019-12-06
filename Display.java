@@ -42,11 +42,33 @@ public class Display extends JComponent{
             g.setColor(Color.RED);
             g.fillOval((int)(game.getPlayerCords()[0]*(double)scale),(int)(game.getPlayerCords()[1]*(double)scale),scale,scale);
             g.setColor(Color.BLACK);
+            g.drawRect((int)(game.getViewBoxCords()[0]*scale),(int)(game.getViewBoxCords()[1]*scale),(int)(game.getPlayerView().length*scale),(int)(game.getPlayerView()[0].length*scale));
             g.drawString("X: "+(int)game.getPlayerCords()[0]+" Y: "+(int)game.getPlayerCords()[1],20,20);
             g.drawString("Seed: "+game.getSeed(),20,40);
         }
         else if(game.getWindowNum() == 1){
-            
+            int[][] viewPlane = game.getPlayerView();
+            double playerViewScale = game.getPlayerViewScale();
+            double[] viewBoxCords = game.getViewBoxCords();
+            for(int x = 0; x < viewPlane.length;x++){
+                for(int y = 0; y < viewPlane[0].length;y++){
+                    if(viewPlane[x][y] != 0){
+                        if(viewPlane[x][y] == 1){
+                            g.setColor(Color.GREEN);
+                        }
+                        else if(viewPlane[x][y] == 2){
+                            g.setColor(new Color(102,66,0));
+                        }
+                        else if(viewPlane[x][y] == 3){
+                            g.setColor(new Color(105,105,105));
+                        }
+                        
+                        g.fillRect((int)(((double)x-(viewBoxCords[0]%1))*playerViewScale),(int)(((double)y-(viewBoxCords[1]%1))*playerViewScale),(int)(playerViewScale+0.5),(int)(playerViewScale+0.5));
+                    }
+                }
+            }
+            g.setColor(Color.RED);
+            g.fillRect((int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),(int)playerViewScale,(int)playerViewScale);
         }
     }
 }
