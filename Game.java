@@ -57,7 +57,7 @@ public class Game{
         //generates the cave systems based off of the seed
         for(int x = 0; x < world.length; x++){
             for(int y = 0; y < world[0].length; y++){
-                if(noise.noise(((double)x/caveIntensity)+seed,(double)y/caveIntensity) < caveWallThickness && noise.noise(((double)x/caveIntensity)+seed,(double)y/caveIntensity) > 0.03){
+                if(noise.noise(((double)x/caveIntensity)+seed,(double)y/caveIntensity) < caveWallThickness && noise.noise(((double)x/caveIntensity)+seed,(double)y/caveIntensity) > 0.08){
                     world[x][y] = 0;
                 }
             }
