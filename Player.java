@@ -1,12 +1,14 @@
 public class Player{
-    double[] cords;
-    int viewRange;
-    double movementSpeed;
+    private double[] cords;
+    private int viewRange;
+    private double movementSpeed;
+    private int[] dimentions;
     public Player(double x, double y,int vr,double ms){
         cords = new double[]{x,y};
         viewRange = vr;
         //blocks per second
         movementSpeed = ms;
+        dimentions = new int[]{1,1};
     }
     public int getViewRange(){
         return viewRange;

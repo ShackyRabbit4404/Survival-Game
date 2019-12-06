@@ -74,6 +74,10 @@ public class Game{
             player.moveHorizontally(delay*-1);
         setPlayerView();
     }
+    public boolean collides(){
+        
+        return false;
+    }
     public void setPlayerView(){
         int blockSize = (int)(screenWidth/((double)player.getViewRange()*2+1)+0.5);
         int blocksUp = (int)((((double)screenHeight/(double)blockSize)-1)/2);
@@ -81,14 +85,14 @@ public class Game{
         if(viewBoxCords[0] < 0){
             viewBoxCords[0] = 0;
         }
-        else if(viewBoxCords[0] > world.length-playerView.length){
-            viewBoxCords[0] = world.length-player.getViewRange()*2-1;
+        else if(viewBoxCords[0] > world.length-playerView.length-1){
+            viewBoxCords[0] = world.length-playerView.length;
         }
         if(viewBoxCords[1] < 0){
             viewBoxCords[1] =  0;
         }
-        else if(viewBoxCords[1] > world[0].length-playerView[0].length){
-            viewBoxCords[1] = world[0].length-blocksUp*2-1;
+        else if(viewBoxCords[1] > world[0].length-playerView[0].length-1){
+            viewBoxCords[1] = world[0].length-playerView[0].length;
         }
         for(int x = 0; x < playerView.length;x++){
             for(int y = 0; y < playerView[0].length;y++){
