@@ -13,6 +13,9 @@ public class Game{
     private int screenHeight;
     private double playerViewScale;
     private Player player;
+    private double gravity;
+    private double verticalVelocity;
+    private double jumpForce;
     //0 = up, 1 = down, 2 = right, 3 = left
     private boolean[] keys;
     public Game(int w, int h,double hi,double ci,double cwt,int sw,int sh){
@@ -26,14 +29,17 @@ public class Game{
         int playerViewRange = 20;
         //blocks per second
         double playerSpeed = 20;
-        player = new Player(w/2,h/4,playerViewRange,playerSpeed);
+        gravity = 2;
+        verticalVelocity = 0;
+        jumpForce = 3;
+        player = new Player(w/2,h/8,playerViewRange,playerSpeed,jumpForce,gravity,verticalVelocity);
         keys = new boolean[4];
         screenWidth = sw;
         screenHeight = sh;
-        playerViewScale = screenWidth/((double)playerViewRange*2+1);
-        int blocksUp = (int)((((double)screenHeight/playerViewScale)-1)/2.0+0.5);
+        playerViewScale = screenWidth/((double)playerViewRange*2+player.getDimentions()[0]);
+        int blocksUp = (int)((((double)screenHeight/playerViewScale)-player.getDimentions()[1])/2.0+0.5);
         System.out.println("Player block scale: "+playerViewScale);
-        playerView = new int[playerViewRange*2+2][blocksUp*2+2];
+        playerView = new int[playerViewRange*2+player.getDimentions()[0]+1][blocksUp*2+player.getDimentions()[1]+1];
         viewBoxCords = new double[2];
     }
     public void generateWorld(int w, int h){
@@ -64,34 +70,86 @@ public class Game{
         }
     }
     public void update(double delay){
-        if(keys[0] && player.getCords()[1] > 0)
-            player.moveVertically(delay*-1);
-        if(keys[1] && player.getCords()[1] < world[0].length)
-            player.moveVertically(delay);
-        if(keys[2] && player.getCords()[0] < world.length)
+        if(keys[0] && player.getCords()[1] > 0){
+            player.moveVertically(delay,true);    
+            if(collides(player.getCords(),true)){
+                player.land();
+                player.intVertical(false);
+            }
+        }
+        /*
+        if(keys[1] && player.getCords()[1] < world[0].length-player.getDimentions()[1]){
+            player.moveVertically(delay,false);
+            if(collides(player.getCords(),true)){
+                player.intVertical(true);
+            }
+        }
+        */
+        if(keys[2] && player.getCords()[0] < world.length-player.getDimentions()[0]){
             player.moveHorizontally(delay);
-        if(keys[3] && player.getCords()[0] > 0)
+            if(collides(player.getCords(),false)){
+                System.out.println("player x: "+player.getCords()[0]);
+                player.intHorizontal(true);
+            }
+        }
+        if(keys[3] && player.getCords()[0] > 0){
             player.moveHorizontally(delay*-1);
+            if(collides(player.getCords(),false)){
+                System.out.println("player x: "+player.getCords()[0]+" y: "+player.getCords()[1]+" world ");
+                player.intHorizontal(false);
+            }
+        }
         setPlayerView();
+        if(!player.getGrounded()){
+            player.moveVertically(delay,false);
+            if(collides(player.getCords(),true)){
+                player.land();
+                player.intVertical(false);
+            }
+        }
     }
-    public boolean collides(){
-        
+    public boolean solidPoint(int x, int y){
+        if(x == 0 && (world[x][y-1] != 0 || world[x][y] != 0)){
+            return true;
+        }
+        else if(y == 0 && (world[x][y] != 0 || world[x-1][y] != 0)){
+            return true;
+        }
+        else if(world[x][y] != 0 || world[x-1][y] != 0 || world[x-1][y-1] != 0 || world[x][y-1] != 0){
+            return true;
+        }
+        return false;
+    }
+    /*
+    if(vert && tempCords[0]%1 == 0 && (y > tempCords[1]  || y < tempCords[1]+player.getDimentions()[1])){
+                    return true;
+                }
+                else if(!vert && tempCords[1]%1 == 0 && (x > tempCords[0] || x < tempCords[1]+player.getDimentions()[0])){
+                    return true;
+                }
+                */
+    public boolean collides(double[] tempCords,boolean vert){
+        for(int x = (int)tempCords[0]; x <= (int)(tempCords[0]+player.getDimentions()[0]);x++){
+            for(int y = (int)tempCords[1]; y <= (int)(tempCords[1]+player.getDimentions()[1]); y++){
+                if(solidPoint(x,y) && x > tempCords[0] && x < tempCords[0]+player.getDimentions()[0] && y > tempCords[1] && y < tempCords[1]+player.getDimentions()[1]){
+                    return true;
+                }
+            }
+        }
         return false;
     }
     public void setPlayerView(){
-        int blockSize = (int)(screenWidth/((double)player.getViewRange()*2+1)+0.5);
-        int blocksUp = (int)((((double)screenHeight/(double)blockSize)-1)/2);
-        viewBoxCords = new double[]{player.getCords()[0]-player.getViewRange(),player.getCords()[1]-blocksUp};
+        viewBoxCords = new double[]{player.getCords()[0]-player.getViewRange(),player.getCords()[1]-(playerView[0].length-player.getDimentions()[1])/2};
         if(viewBoxCords[0] < 0){
             viewBoxCords[0] = 0;
         }
-        else if(viewBoxCords[0] > world.length-playerView.length-1){
+        else if(viewBoxCords[0] > world.length-playerView.length-player.getDimentions()[0]){
             viewBoxCords[0] = world.length-playerView.length;
         }
         if(viewBoxCords[1] < 0){
             viewBoxCords[1] =  0;
         }
-        else if(viewBoxCords[1] > world[0].length-playerView[0].length-1){
+        else if(viewBoxCords[1] > world[0].length-playerView[0].length-player.getDimentions()[1]){
             viewBoxCords[1] = world[0].length-playerView[0].length;
         }
         for(int x = 0; x < playerView.length;x++){
@@ -138,5 +196,8 @@ public class Game{
     }
     public double getSeed(){
         return seed;
+    }
+    public Player getPlayer(){
+        return player;
     }
 }
