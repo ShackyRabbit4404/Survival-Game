@@ -29,9 +29,9 @@ public class Game{
         int playerViewRange = 20;
         //blocks per second
         double playerSpeed = 20;
-        gravity = 5;
+        gravity = 20;
         verticalVelocity = 0;
-        jumpForce = 3;
+        jumpForce = 8;
         player = new Player(w/2,h/8,playerViewRange,playerSpeed,jumpForce,gravity,verticalVelocity);
         keys = new boolean[4];
         screenWidth = sw;
