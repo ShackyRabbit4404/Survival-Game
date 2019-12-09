@@ -18,6 +18,9 @@ public class Player{
         verticalVelocity = vv;
         grounded = false;
     }
+    public void setVertVelocity(double vv){
+        verticalVelocity = vv;
+    }
     //removes the decimal places on the y cordinate
     public void intVertical(boolean a){
         if(a)
@@ -29,6 +32,9 @@ public class Player{
     //+.000001
     public boolean getGrounded(){
         return grounded;
+    }
+    public void jump(){
+        verticalVelocity = jumpForce*-1;
     }
     public double getVertVelocity(){
         return verticalVelocity;
@@ -50,12 +56,19 @@ public class Player{
     public int getViewRange(){
         return viewRange;
     }
+    public void applyGravity(double delay){
+        verticalVelocity += gravity*delay;
+        cords[1] += verticalVelocity*delay;
+    }
     public void moveVertically(double delay,boolean jump){
+        cords[1] += movementSpeed*delay;
+        /*
         if(jump){
             verticalVelocity = jumpForce*-1;
         }
         verticalVelocity += gravity*delay;
         cords[1] += verticalVelocity*delay;
+        */
     }
     public double[] getVerticalMove(double delay){
         return new double[]{cords[0],cords[1]+movementSpeed*delay};
