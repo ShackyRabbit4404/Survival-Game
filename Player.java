@@ -23,6 +23,7 @@ public class Player{
     }
     //removes the decimal places on the y cordinate
     public void intVertical(boolean a){
+        verticalVelocity = 0;
         if(a)
             cords[1] = (double)((int)(cords[1]))-.000001;
         else

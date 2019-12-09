@@ -71,21 +71,16 @@ public class Game{
     }
     public void update(double delay){
         if(keys[0] && player.getCords()[1] > 0){
-            /*
-            player.moveVertically(delay*-1,true);    
-            if(collides(player.getCords())){
-                player.setVertVelocity(0);
-                player.intVertical(false);
-            }
-            */
-           player.jump();
+            player.jump();
         }
+        /*
         if(keys[1] && player.getCords()[1] < world[0].length-player.getDimentions()[1]){
             player.moveVertically(delay,false);
             if(collides(player.getCords())){
                 player.intVertical(true);
             }
         }
+        */
         if(keys[2] && player.getCords()[0] < world.length-player.getDimentions()[0]){
             player.moveHorizontally(delay);
             if(collides(player.getCords())){
@@ -98,7 +93,6 @@ public class Game{
                 player.intHorizontal(false);
             }
         }
-        setPlayerView();
         player.applyGravity(delay);
         if(collides(player.getCords())){
             player.setVertVelocity(0);
@@ -107,15 +101,7 @@ public class Game{
             else
                 player.intVertical(true);
         }
-        /*
-        if(!player.getGrounded()){
-            player.moveVertically(delay,false);
-            if(collides(player.getCords(),true)){
-                player.land();
-                player.intVertical(false);
-            }
-        }
-        */
+        setPlayerView();
     }
     public boolean solidPoint(int x, int y){
         if(x == 0 && (world[x][y-1] != 0 || world[x][y] != 0)){
