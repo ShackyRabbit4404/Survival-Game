@@ -85,18 +85,18 @@ public class Game{
         */
         if(keys[2] && player.getCords()[0] < world.length-player.getDimentions()[0]){
             player.moveHorizontally(delay);
-            if(collides2()){
+            if(collides(player.getCords())){
                 player.intHorizontal(true);
             }
         }
         if(keys[3] && player.getCords()[0] > 0){
             player.moveHorizontally(delay*-1);
-            if(collides2()){
+            if(collides(player.getCords())){
                 player.intHorizontal(false);
             }
         }
         player.applyGravity(delay);
-        if(collides2()){
+        if(collides(player.getCords())){
             player.setVertVelocity(0);
             if(player.getVertVelocity() < 0)
                 player.intVertical(false);
@@ -155,10 +155,10 @@ public class Game{
             }
         }
     }
-    public boolean collides2(){
+    public boolean collides2(double[] cords){
         ArrayList<Hitbox> boxes = new ArrayList<Hitbox>();
-        for(int x = (int)player.getCords()[0]; x < (int)(player.getCords()[0]+player.getDimentions()[0]);x++){
-            for(int y = (int)player.getCords()[1]; y < (int)(player.getCords()[1]+player.getDimentions()[1]);y++){
+        for(int x = (int)cords[0]; x < (int)(cords[0]+player.getDimentions()[0]);x++){
+            for(int y = (int)cords[1]; y < (int)(cords[1]+player.getDimentions()[1]);y++){
                 boxes.add(new Hitbox(new double[][]{{x,y},{x+1,y+1}}));
             }
         }

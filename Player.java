@@ -13,7 +13,7 @@ public class Player{
         viewRange = vr;
         //blocks per second
         movementSpeed = ms;
-        dimentions = new int[]{1,1};
+        dimentions = new int[]{2,2};
         jumpForce = jf;
         gravity = g;
         verticalVelocity = vv;
@@ -21,16 +21,20 @@ public class Player{
         genHitbox();
     }
     public void genHitbox(){
-        double[][] points = new double[dimentions[0]*4+dimentions[1]*4-4][2];
-        for(double x = 0; x < dimentions[0]; x+=0.5){
+        double[][] points = new double[dimentions[0]*4+dimentions[1]*4][2];
+        System.out.println("Player num hitbox points: "+points.length+" 0-"+dimentions[0]+" "+dimentions[0]+"-"+(dimentions[0]*2-1));
+        for(double x = 0; x <= dimentions[0]; x+=0.5){
             points[(int)(x*2)] = new double[]{x,0};
-            points[(int)(x*2)+(dimentions[0]*2-1)] = new double[]{x,dimentions[1]};
+            points[(int)(x*2)+dimentions[0]*2+1] = new double[]{x,dimentions[1]};
         }
-        for(double y = 0.5; y < dimentions[1];y++){
-            points[(int)(y*2)+dimentions[0]*4-2] = new double[]{0,y};
-            points[(int)(y*2)+dimentions[0]*4+dimentions[1]-3] = new double[]{dimentions[0],y};
+        for(double y = 0.5; y < dimentions[1]-1;y++){
+            points[(int)(y*2)+dimentions[0]*4+1] = new double[]{0,y};
+            points[(int)(y*2)+dimentions[0]*4+2+dimentions[1]*2-2] = new double[]{dimentions[0],y};
         }
         hitbox = new Hitbox(points);
+        for(double[] cord:points){
+            System.out.println("Player hitbox -> X: "+cord[0]+" Y: "+cord[1]);
+        }
     }
     public void setVertVelocity(double vv){
         verticalVelocity = vv;
