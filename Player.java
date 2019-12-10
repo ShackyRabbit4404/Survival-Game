@@ -7,6 +7,7 @@ public class Player{
     private double gravity;
     private double verticalVelocity;
     private boolean grounded;
+    private Hitbox hitbox;
     public Player(double x, double y,int vr,double ms,double jf,double g,double vv){
         cords = new double[]{x,y};
         viewRange = vr;
@@ -17,6 +18,19 @@ public class Player{
         gravity = g;
         verticalVelocity = vv;
         grounded = false;
+        genHitbox();
+    }
+    public void genHitbox(){
+        double[][] points = new double[dimentions[0]*4+dimentions[1]*4-4][2];
+        for(double x = 0; x < dimentions[0]; x+=0.5){
+            points[(int)(x*2)] = new double[]{x,0};
+            points[(int)(x*2)+(dimentions[0]*2-1)] = new double[]{x,dimentions[1]};
+        }
+        for(double y = 0.5; y < dimentions[1];y++){
+            points[(int)(y*2)+dimentions[0]*4-2] = new double[]{0,y};
+            points[(int)(y*2)+dimentions[0]*4+dimentions[1]-3] = new double[]{dimentions[0],y};
+        }
+        hitbox = new Hitbox(points);
     }
     public void setVertVelocity(double vv){
         verticalVelocity = vv;
@@ -25,12 +39,15 @@ public class Player{
     public void intVertical(boolean a){
         verticalVelocity = 0;
         if(a)
-            cords[1] = (double)((int)(cords[1]))-.000001;
+            cords[1] = (double)((int)(cords[1]));
         else
-            cords[1] = (double)((int)(cords[1]+1))+.000001;
+            cords[1] = (double)((int)(cords[1]+1));
     }
     //removes the decimal places on the y cordinate
     //+.000001
+    public Hitbox getHitbox(){
+        return hitbox;
+    }
     public boolean getGrounded(){
         return grounded;
     }
@@ -42,9 +59,9 @@ public class Player{
     }
     public void intHorizontal(boolean a){
         if(a)
-            cords[0] = (double)((int)(cords[0]))-.000001;
+            cords[0] = (double)((int)(cords[0]));
         else
-            cords[0] = (double)((int)(cords[0]+1))+.000001;
+            cords[0] = (double)((int)(cords[0]));
     }
     public void land(){
         grounded = true;

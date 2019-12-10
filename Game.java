@@ -1,3 +1,5 @@
+import java.util.*;
+import java.awt.*;
 public class Game{
     //0 = main menu, 1 = player view, 2 = map view,
     private int screenNum;
@@ -83,18 +85,18 @@ public class Game{
         */
         if(keys[2] && player.getCords()[0] < world.length-player.getDimentions()[0]){
             player.moveHorizontally(delay);
-            if(collides(player.getCords())){
+            if(collides2()){
                 player.intHorizontal(true);
             }
         }
         if(keys[3] && player.getCords()[0] > 0){
             player.moveHorizontally(delay*-1);
-            if(collides(player.getCords())){
+            if(collides2()){
                 player.intHorizontal(false);
             }
         }
         player.applyGravity(delay);
-        if(collides(player.getCords())){
+        if(collides2()){
             player.setVertVelocity(0);
             if(player.getVertVelocity() < 0)
                 player.intVertical(false);
@@ -124,9 +126,9 @@ public class Game{
                 }
                 */
     public boolean collides(double[] tempCords){
-        for(int x = (int)tempCords[0]; x <= (int)(tempCords[0]+player.getDimentions()[0]);x++){
-            for(int y = (int)tempCords[1]; y <= (int)(tempCords[1]+player.getDimentions()[1]); y++){
-                if(solidPoint(x,y) && x > tempCords[0] && x < tempCords[0]+player.getDimentions()[0] && y > tempCords[1] && y < tempCords[1]+player.getDimentions()[1]){
+        for(double x = (int)tempCords[0]; x <= (int)(tempCords[0]+player.getDimentions()[0]);x+=0.5){
+            for(double y = (int)tempCords[1]; y <= (int)(tempCords[1]+player.getDimentions()[1]); y+=0.5){
+                if(solidPoint((int)x,(int)y) && x > tempCords[0] && x < tempCords[0]+player.getDimentions()[0] && y > tempCords[1] && y < tempCords[1]+player.getDimentions()[1]){
                     return true;
                 }
             }
@@ -153,6 +155,30 @@ public class Game{
             }
         }
     }
+    public boolean collides2(){
+        ArrayList<Hitbox> boxes = new ArrayList<Hitbox>();
+        for(int x = (int)player.getCords()[0]; x < (int)(player.getCords()[0]+player.getDimentions()[0]);x++){
+            for(int y = (int)player.getCords()[1]; y < (int)(player.getCords()[1]+player.getDimentions()[1]);y++){
+                boxes.add(new Hitbox(new double[][]{{x,y},{x+1,y+1}}));
+            }
+        }
+        for(int i = 0; i < boxes.size(); i++){
+            if(boxes.get(i).contains(player.getHitbox().getPoints(),player.getCords()[0],player.getCords()[1])){
+                return true;
+            }
+        }
+        /*
+        for(double x = (int)player.getCords()[0]; x < (int)(player.getCords()[0]+player.getDimentions()[0]); x+=0.5){
+            for(double y = (int)player.getCords()[1]; y < (int)(player.getCords()[1]+player.getDimentions()[1]);y+=0.5){
+                if(solidPoint((int)x,(int)y) && x > player.getCords()[0] && x < player.getCords()[0]+player.getDimentions()[0] && y > player.getCords()[1] && y < player.getCords()[1]+player.getDimentions()[1]){
+                    return true;
+                }
+            }
+        }
+        */
+        return false;
+    }
+    
     public void setScreenNum(int sn){
         screenNum = sn;
     }
