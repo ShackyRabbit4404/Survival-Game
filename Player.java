@@ -22,24 +22,18 @@ public class Player{
     }
     public void genHitbox(){
         double[][] points = new double[dimentions[0]*4+dimentions[1]*4][2];
-        System.out.println("Player num hitbox points: "+points.length);
         int count = 0;
         for(double x = 0; x <= dimentions[0]; x+=0.5){
             points[(int)(x*2)] = new double[]{x,0};
             points[(int)(x*2)+dimentions[0]*2+1] = new double[]{x,dimentions[1]};
             count += 2;
         }
-        System.out.println((dimentions[0]*4+2)+" should be equal to 10");
         for(double y = 0.5; y < dimentions[1];y+=0.5){
             points[(int)((y-.5)*2)+dimentions[0]*4+2] = new double[]{0,y};
             points[(int)((y-.5)*2)+dimentions[0]*4+2+dimentions[1]*2-1] = new double[]{dimentions[0],y};
             count += 2;
         }
-        System.out.println(count+" should equal "+points.length);
         hitbox = new Hitbox(points);
-        for(double[] cord:points){
-            System.out.println("Player hitbox -> X: "+cord[0]+" Y: "+cord[1]);
-        }
     }
     public void setVertVelocity(double vv){
         verticalVelocity = vv;
