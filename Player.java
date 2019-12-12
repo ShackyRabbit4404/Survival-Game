@@ -13,7 +13,7 @@ public class Player{
         viewRange = vr;
         //blocks per second
         movementSpeed = ms;
-        dimentions = new int[]{1,1};
+        dimentions = new int[]{2,3};
         jumpForce = jf;
         gravity = g;
         verticalVelocity = vv;
@@ -88,13 +88,6 @@ public class Player{
     }
     public void moveVertically(double delay,boolean jump){
         cords[1] += movementSpeed*delay;
-        /*
-        if(jump){
-            verticalVelocity = jumpForce*-1;
-        }
-        verticalVelocity += gravity*delay;
-        cords[1] += verticalVelocity*delay;
-        */
     }
     public double[] getVerticalMove(double delay){
         return new double[]{cords[0],cords[1]+movementSpeed*delay};

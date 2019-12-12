@@ -40,7 +40,7 @@ public class Display extends JComponent{
                 }
             }
             g.setColor(Color.RED);
-            g.fillOval((int)(game.getPlayerCords()[0]*(double)scale),(int)(game.getPlayerCords()[1]*(double)scale),scale,scale);
+            g.fillRect((int)(game.getPlayerCords()[0]*(double)scale),(int)(game.getPlayerCords()[1]*(double)scale),scale*game.getPlayerDimentions()[0],scale*game.getPlayerDimentions()[1]);
             g.setColor(Color.BLACK);
             g.drawRect((int)(game.getViewBoxCords()[0]*scale),(int)(game.getViewBoxCords()[1]*scale),(int)(game.getPlayerView().length*scale),(int)(game.getPlayerView()[0].length*scale));
             g.drawString("X: "+game.getPlayerCords()[0]+" Y: "+game.getPlayerCords()[1],20,20);
@@ -69,11 +69,12 @@ public class Display extends JComponent{
                 }
             }
             g.setColor(Color.RED);
-            g.fillRect((int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),(int)playerViewScale,(int)playerViewScale);
+            g.fillRect((int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),(int)playerViewScale*game.getPlayerDimentions()[0],(int)playerViewScale*game.getPlayerDimentions()[1]);
             g.setColor(Color.BLACK);
             g.drawString("X: "+game.getPlayerCords()[0]+" Y: "+game.getPlayerCords()[1],20,20);
             g.drawString("Seed: "+game.getSeed(),20,40);
-            
+            g.drawString("Grounded: "+game.getPlayer().getGrounded(),20,60);
+            g.drawString("Vertical Velocity: "+game.getPlayer().getVertVelocity(),20,80);
         }
     }
 }

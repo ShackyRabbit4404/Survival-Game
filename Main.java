@@ -11,8 +11,10 @@ public class Main{
         //Stores all game info and methods
         int screenScale = 5;
         int hillIntensity = 50;
+        //40
         int caveIntensity = 40;
-        double caveWallThickness = 0.15;
+        //0.15
+        double caveWallThickness = .15;
         int worldWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/screenScale); 
         int worldHeight = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/screenScale);
         Game game = new Game(worldWidth,worldHeight,hillIntensity,caveIntensity,caveWallThickness,(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(),(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight());

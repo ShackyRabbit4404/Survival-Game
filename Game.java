@@ -30,10 +30,10 @@ public class Game{
         //num blocks the player can see in any direction
         int playerViewRange = 20;
         //blocks per second
-        double playerSpeed = 20;
+        double playerSpeed = 10;
         gravity = 20;
         verticalVelocity = 0;
-        jumpForce = 8;
+        jumpForce = 12;
         player = new Player(w/2,h/8,playerViewRange,playerSpeed,jumpForce,gravity,verticalVelocity);
         keys = new boolean[4];
         screenWidth = sw;
@@ -72,7 +72,7 @@ public class Game{
         }
     }
     public void update(double delay){
-        if(keys[0] && player.getCords()[1] > 0){
+        if(keys[0] && player.getGrounded() && player.getCords()[1] > 0){
             player.jump();
         }
         /*
@@ -85,53 +85,31 @@ public class Game{
         */
         if(keys[2] && player.getCords()[0] < world.length-player.getDimentions()[0]){
             player.moveHorizontally(delay);
-            if(collides2(player.getCords())){
+            if(collides(player.getCords())){
                 player.intHorizontal(true);
             }
         }
         if(keys[3] && player.getCords()[0] > 0){
             player.moveHorizontally(delay*-1);
-            if(collides2(player.getCords())){
+            if(collides(player.getCords())){
                 player.intHorizontal(false);
             }
         }
         player.applyGravity(delay);
-        if(collides2(player.getCords())){
-            if(player.getVertVelocity() < 0){
-                player.intVertical(false);
+        if(collides(player.getCords())){
+            if(player.getVertVelocity() > 0){
+                player.intVertical(true);
                 player.land();
             }
             else{
                 player.setVertVelocity(0);
-                player.intVertical(true);
+                player.intVertical(false);
             }
         }
         else{
             player.falling();
         }   
         setPlayerView();
-    }
-    public boolean solidPoint(int x, int y){
-        if(x == 0 && (world[x][y-1] != 0 || world[x][y] != 0)){
-            return true;
-        }
-        else if(y == 0 && (world[x][y] != 0 || world[x-1][y] != 0)){
-            return true;
-        }
-        else if(world[x][y] != 0 || world[x-1][y] != 0 || world[x-1][y-1] != 0 || world[x][y-1] != 0){
-            return true;
-        }
-        return false;
-    }
-    public boolean collides(double[] tempCords){
-        for(double x = (int)tempCords[0]; x <= (int)(tempCords[0]+player.getDimentions()[0]);x+=0.5){
-            for(double y = (int)tempCords[1]; y <= (int)(tempCords[1]+player.getDimentions()[1]); y+=0.5){
-                if(solidPoint((int)x,(int)y) && x > tempCords[0] && x < tempCords[0]+player.getDimentions()[0] && y > tempCords[1] && y < tempCords[1]+player.getDimentions()[1]){
-                    return true;
-                }
-            }
-        }
-        return false;
     }
     public void setPlayerView(){
         viewBoxCords = new double[]{player.getCords()[0]-player.getViewRange(),player.getCords()[1]-(playerView[0].length-player.getDimentions()[1])/2};
@@ -153,7 +131,9 @@ public class Game{
             }
         }
     }
-    public boolean collides2(double[] cords){
+    public boolean collides(double[] cords){
+        if(cords[1] < 0 || cords[0] < 0 || cords[0] > world.length-player.getDimentions()[0]-1 || cords[1] > world[0].length-player.getDimentions()[1]-1)
+            return true;
         ArrayList<Hitbox> boxes = new ArrayList<Hitbox>();
         for(int x = (int)cords[0]; x <= (int)(cords[0]+player.getDimentions()[0]);x++){
             for(int y = (int)cords[1]; y <= (int)(cords[1]+player.getDimentions()[1]);y++){
@@ -162,7 +142,6 @@ public class Game{
                 }
             }
         }
-        
         return false;
     }
     
@@ -174,6 +153,9 @@ public class Game{
     }
     public double[] getViewBoxCords(){
         return viewBoxCords;
+    }
+    public int[] getPlayerDimentions(){
+        return player.getDimentions();
     }
     public int getPlayerViewRange(){
         return player.getViewRange();
