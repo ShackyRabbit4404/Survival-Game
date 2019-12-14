@@ -86,12 +86,18 @@ public class Game{
         if(keys[2] && player.getCords()[0] < world.length-player.getDimentions()[0]){
             player.moveHorizontally(delay);
             if(collides(player.getCords())){
+                if(player.getGrounded() && world[(int)player.getCords()[0]+player.getDimentions()[0]][(int)player.getCords()[1]+player.getDimentions()[1]-2] == 0){
+                    player.stepUp();
+                }
                 player.intHorizontal(true);
             }
         }
         if(keys[3] && player.getCords()[0] > 0){
             player.moveHorizontally(delay*-1);
             if(collides(player.getCords())){
+                if(player.getGrounded() && world[(int)player.getCords()[0]][(int)player.getCords()[1]+player.getDimentions()[1]-2] == 0){
+                    player.stepUp();
+                }
                 player.intHorizontal(false);
             }
         }

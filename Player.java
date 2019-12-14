@@ -60,6 +60,9 @@ public class Player{
     public double getVertVelocity(){
         return verticalVelocity;
     }
+    public void stepUp(){
+        cords[1] -= 1.1;
+    }
     public void intHorizontal(boolean a){
         if(a)
             cords[0] = (double)((int)(cords[0]));
