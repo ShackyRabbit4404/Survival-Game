@@ -77,4 +77,7 @@ public class Display extends JComponent{
             g.drawString("Vertical Velocity: "+game.getPlayer().getVertVelocity(),20,80);
         }
     }
+    public int getScale(){
+        return scale;
+    }
 }

@@ -150,7 +150,9 @@ public class Game{
         }
         return false;
     }
-    
+    public void clicked(int x, int y, int clickNum){
+        
+    }
     public void setScreenNum(int sn){
         screenNum = sn;
     }

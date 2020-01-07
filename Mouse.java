@@ -1,11 +1,14 @@
 import java.awt.event.*;
+import java.awt.MouseInfo;
 public class Mouse implements MouseListener{
     private Game game;
-    public Mouse(Game g){
+    private Display display;
+    public Mouse(Game g, Display d){
         game = g;
+        display = d;
     }
     public void mousePressed(MouseEvent e){
-        
+        game.clicked((int)(MouseInfo.getPointerInfo().getLocation().getX()/display.getScale()),(int)(MouseInfo.getPointerInfo().getLocation().getY()/display.getScale()),1);
     }
     public void mouseReleased(MouseEvent e){
         
