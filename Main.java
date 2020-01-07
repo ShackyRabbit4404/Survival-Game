@@ -26,7 +26,7 @@ public class Main{
         int updateRate = 30;
         //Creates the user input classes
         Keyboard keyboard = new Keyboard(game);
-        Mouse mouse = new Mouse(game);
+        Mouse mouse = new Mouse(game,screen);
         frame.addKeyListener(keyboard);
         frame.addMouseListener(mouse);
         //Starts the game 
