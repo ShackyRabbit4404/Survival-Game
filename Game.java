@@ -3,7 +3,7 @@ import java.awt.*;
 public class Game{
     //0 = main menu, 1 = player view, 2 = map view,
     private int screenNum;
-    //0 = empty, 1 = dirt, 2 = stone, 3 = bedrock
+    //0 = empty, 1 = grassy dirt, 2 = dirt, 3 = stone
     private int[][] world;
     private int[][] playerView;
     private double[] viewBoxCords;
@@ -20,7 +20,8 @@ public class Game{
     private double jumpForce;
     //0 = up, 1 = down, 2 = right, 3 = left
     private boolean[] keys;
-    public Game(int w, int h,double hi,double ci,double cwt,int sw,int sh){
+    public int screenScale;
+    public Game(int w, int h,double hi,double ci,double cwt,int sw,int sh,int ss){
         screenNum = 2;
         world = new int[1][1];
         hillIntensity = hi;
@@ -43,6 +44,7 @@ public class Game{
         System.out.println("Player block scale: "+playerViewScale);
         playerView = new int[playerViewRange*2+player.getDimentions()[0]+1][blocksUp*2+player.getDimentions()[1]+1];
         viewBoxCords = new double[2];
+        screenScale = ss;
     }
     public void generateWorld(int w, int h){
         Noise noise = new Noise();
@@ -151,7 +153,22 @@ public class Game{
         return false;
     }
     public void clicked(int x, int y, int clickNum){
-        
+        System.out.println("Width: "+playerView.length+" Height: "+playerView[0].length);
+        if(screenNum == 1){
+            System.out.println("Before scaled down X: "+x+" Y: "+y);
+            x = (int)((x+29)/playerViewScale);
+            y = (int)((y-29)/playerViewScale);
+            System.out.println("After scaled down X:"+x+" Y: "+y);
+            if(playerView[x][y] != 0){
+                if(playerView[x][y] == 1)
+                    System.out.println("Removing grassy dirt");
+                else if(playerView[x][y] == 2)
+                    System.out.println("Removing dirt");
+                else if(playerView[x][y] == 3)
+                    System.out.println("Removing stone");
+                world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = 0;
+            }
+        }
     }
     public void setScreenNum(int sn){
         screenNum = sn;

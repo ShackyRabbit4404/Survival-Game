@@ -8,7 +8,7 @@ public class Mouse implements MouseListener{
         display = d;
     }
     public void mousePressed(MouseEvent e){
-        game.clicked((int)(MouseInfo.getPointerInfo().getLocation().getX()/display.getScale()),(int)(MouseInfo.getPointerInfo().getLocation().getY()/display.getScale()),1);
+        game.clicked((int)(MouseInfo.getPointerInfo().getLocation().getX()),(int)(MouseInfo.getPointerInfo().getLocation().getY()),1);
     }
     public void mouseReleased(MouseEvent e){
         

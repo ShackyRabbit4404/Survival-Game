@@ -17,7 +17,7 @@ public class Main{
         double caveWallThickness = .15;
         int worldWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/screenScale); 
         int worldHeight = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/screenScale);
-        Game game = new Game(worldWidth,worldHeight,hillIntensity,caveIntensity,caveWallThickness,(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(),(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+        Game game = new Game(worldWidth,worldHeight,hillIntensity,caveIntensity,caveWallThickness,(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(),(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight(),screenScale);
         //Display class draws the graphics
         Display screen = new Display(worldWidth,worldWidth,game,screenScale);
         frame.add(screen);
