@@ -21,6 +21,7 @@ public class Game{
     //0 = up, 1 = down, 2 = right, 3 = left
     private boolean[] keys;
     public int screenScale;
+    //constructor method
     public Game(int w, int h,double hi,double ci,double cwt,int sw,int sh,int ss){
         screenNum = 2;
         world = new int[1][1];
@@ -46,6 +47,7 @@ public class Game{
         viewBoxCords = new double[2];
         screenScale = ss;
     }
+    //generates the word including cave systems
     public void generateWorld(int w, int h){
         Noise noise = new Noise();
         world = new int[w][h];
@@ -73,6 +75,7 @@ public class Game{
             }
         }
     }
+    //updates the game values (player position, and user input)
     public void update(double delay){
         if(keys[0] && player.getGrounded() && player.getCords()[1] > 0){
             player.jump();
@@ -119,6 +122,7 @@ public class Game{
         }   
         setPlayerView();
     }
+    //sets the view of the player based on view range
     public void setPlayerView(){
         viewBoxCords = new double[]{player.getCords()[0]-player.getViewRange(),player.getCords()[1]-(playerView[0].length-player.getDimentions()[1])/2};
         if(viewBoxCords[0] < 0){
@@ -139,6 +143,7 @@ public class Game{
             }
         }
     }
+    //checks if the player is colliding with anything
     public boolean collides(double[] cords){
         if(cords[1] < 0 || cords[0] < 0 || cords[0] > world.length-player.getDimentions()[0]-1 || cords[1] > world[0].length-player.getDimentions()[1]-1)
             return true;
@@ -152,67 +157,93 @@ public class Game{
         }
         return false;
     }
+    //reacts to when and where the player clicks
     public void clicked(int x, int y, int clickNum){
         System.out.println("Width: "+playerView.length+" Height: "+playerView[0].length);
         if(screenNum == 1){
             System.out.println("Before scaled down X: "+x+" Y: "+y);
-            x = (int)((x+29)/playerViewScale);
-            y = (int)((y-29)/playerViewScale);
+            x = (int)((x+((viewBoxCords[0]%1)*playerViewScale))/playerViewScale);
+            y = (int)((y-29+((viewBoxCords[1]%1)*playerViewScale))/playerViewScale);
             System.out.println("After scaled down X:"+x+" Y: "+y);
             if(playerView[x][y] != 0){
-                if(playerView[x][y] == 1)
+                if(playerView[x][y] == 1){
                     System.out.println("Removing grassy dirt");
-                else if(playerView[x][y] == 2)
+                    player.addItem(new Item("Dirt",1));
+                }
+                else if(playerView[x][y] == 2){
                     System.out.println("Removing dirt");
-                else if(playerView[x][y] == 3)
+                    player.addItem(new Item("Dirt",1));
+                }
+                else if(playerView[x][y] == 3){
                     System.out.println("Removing stone");
+                    player.addItem(new Item("Stone",1));
+                }
                 world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = 0;
             }
         }
     }
+    //returns screenNum (what view the display class is showing)
     public void setScreenNum(int sn){
         screenNum = sn;
     }
+    //returns the players view
     public int[][] getPlayerView(){
         return playerView;
     }
+    //returns the location of the players view
     public double[] getViewBoxCords(){
         return viewBoxCords;
     }
+    //returns the players dimentions
     public int[] getPlayerDimentions(){
         return player.getDimentions();
     }
+    //returns the player view range
     public int getPlayerViewRange(){
         return player.getViewRange();
     }
+    //returns the player view scale
     public double getPlayerViewScale(){
         return playerViewScale;
     }
+    //returns wether the player moving up key is pressed
     public void movingUp(boolean up){
         keys[0] = up;
     }
+    //returns if the player moving down key is pressed
     public void movingDown(boolean down){
         keys[1] = down;
     }
+    //returns if the player moving right key is pressed
     public void movingRight(boolean right){
         keys[2] = right;
     }
+    //returns if the player moving left key is pressed
     public void movingLeft(boolean left){
         keys[3] = left;
     }
+    //returns the view that the display class shows
     public int getWindowNum(){
         return screenNum;
     }
+    //returns the world 
     public int[][] getWorld(){
         return world;
     }
+    //returns the player cordinates
     public double[] getPlayerCords(){
         return player.getCords();
     }
+    //return the seed of the world
     public double getSeed(){
         return seed;
     }
+    //returns the player object
     public Player getPlayer(){
         return player;
+    }
+    //returns the player's inventory
+    public Item[] getPlayerInventory(){
+        return player.getInventory();
     }
 }

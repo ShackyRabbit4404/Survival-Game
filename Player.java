@@ -8,6 +8,10 @@ public class Player{
     private double verticalVelocity;
     private boolean grounded;
     private Hitbox hitbox;
+    private Item[] inventory;
+    private Item[] hotbar;
+    private int hotbarItemSelected;
+    //constructor method
     public Player(double x, double y,int vr,double ms,double jf,double g,double vv){
         cords = new double[]{x,y};
         viewRange = vr;
@@ -19,7 +23,11 @@ public class Player{
         verticalVelocity = vv;
         grounded = false;
         genHitbox();
+        inventory = new Item[20];
+        hotbar = new Item[10];
+        hotbarItemSelected = 0;
     }
+    //generates the hit box for the player and it is modular to any player dimentions
     public void genHitbox(){
         double[][] points = new double[dimentions[0]*4+dimentions[1]*4][2];
         int count = 0;
@@ -35,8 +43,33 @@ public class Player{
         }
         hitbox = new Hitbox(points);
     }
+    //sets the vertical velocity to a given value
     public void setVertVelocity(double vv){
         verticalVelocity = vv;
+    }
+    //adds items to inventory
+    public void addItem(Item a){
+        boolean found = false;
+        for(Item i: inventory){
+            if(i != null && i.getName().equals(a.getName())){
+                int addable = i.canStackMore();
+                if(addable >= a.getCount()){
+                    i.increaseStack(a.getCount());
+                    found = true;
+                }
+                else{
+                    i.increaseStack(addable);
+                    a.decreaseStack(addable);
+                }
+            }
+        }
+        if(!found){
+            int i = 0;
+            while(i < inventory.length-1 && inventory[i] != null){
+                i++;
+            }
+            inventory[i] = a;
+        }
     }
     //removes the decimal places on the y cordinate
     public void intVertical(boolean a){
@@ -46,58 +79,85 @@ public class Player{
         else
             cords[1] = (double)((int)(cords[1]+1));
     }
-    //removes the decimal places on the y cordinate
-    //+.000001
+    //returns the player inventory
+    public Item[] getInventory(){
+        return inventory;
+    }
+    //returns the hitbox of the player
     public Hitbox getHitbox(){
         return hitbox;
     }
+    //returns wether the player is grounded
     public boolean getGrounded(){
         return grounded;
     }
+    //sets the vertical velocity to the jump force
     public void jump(){
         verticalVelocity = jumpForce*-1;
     }
+    //returns the vertical velocity 
     public double getVertVelocity(){
         return verticalVelocity;
     }
+    //when the player has a one block step up, the program will auto do that
     public void stepUp(){
-        cords[1] -= 1.1;
+        jump();
+        //cords[1] -= 1.1;
     }
+    //removes the decimal place on the x cordinate
     public void intHorizontal(boolean a){
         if(a)
             cords[0] = (double)((int)(cords[0]));
         else
             cords[0] = (double)((int)(cords[0]+1));
     }
+    //adjust varibles to react when the player hits the ground
     public void land(){
         grounded = true;
         verticalVelocity = 0;
     }
+    //adjust varibles to react when the player is falling
     public void falling(){
         grounded = false;
     }
+    //returns how far to the left and right the player can see
     public int getViewRange(){
         return viewRange;
     }
+    //adjusts the vertical velocity to account for gravity and alters the y value based on that
     public void applyGravity(double delay){
         verticalVelocity += gravity*delay;
         cords[1] += verticalVelocity*delay;
     }
+    //moves the player in the y direction
     public void moveVertically(double delay,boolean jump){
         cords[1] += movementSpeed*delay;
     }
+    //gets the predicted vertical move without actually adjusting the player's y position
     public double[] getVerticalMove(double delay){
         return new double[]{cords[0],cords[1]+movementSpeed*delay};
     }
+    //moves the players horizontal position
     public void moveHorizontally(double delay){
         cords[0] += movementSpeed*delay;
     }
+    //returns the hotbar
+    public Item[] getHotbar(){
+        return hotbar;
+    }
+    //returns the hotbar item that is selected
+    public int getHotbarItemSelected(){
+        return hotbarItemSelected;
+    }
+    //gets the predicted horizontal move without actually adjusting the player's x position
     public double[] getHorizontalMove(double delay){
         return new double[]{cords[0]+movementSpeed*delay,cords[1]};
     }
+    //returns the player cords
     public double[] getCords(){
         return cords;
     }
+    //returns the dimentions of the player
     public int[] getDimentions(){
         return dimentions;
     }

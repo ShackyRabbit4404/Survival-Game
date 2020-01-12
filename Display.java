@@ -6,6 +6,7 @@ public class Display extends JComponent{
     private Game game;
     private int[][] world;
     private int scale;
+    //constructor method
     public Display(int w, int h, Game g,int s){
         super();
         width = w;
@@ -15,9 +16,11 @@ public class Display extends JComponent{
         world = game.getWorld();
         scale = s;
     }
+    //calls the draw method
     public void draw(){
         super.repaint();
     }
+    //draws the graphcs on the screen
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.CYAN);
@@ -75,8 +78,17 @@ public class Display extends JComponent{
             g.drawString("Seed: "+game.getSeed(),20,40);
             g.drawString("Grounded: "+game.getPlayer().getGrounded(),20,60);
             g.drawString("Vertical Velocity: "+game.getPlayer().getVertVelocity(),20,80);
+            g.drawString("View Box Cords: X:"+viewBoxCords[0]+" Y: "+viewBoxCords[1],20,100);
+            int a = 0;
+            for(Item i: game.getPlayerInventory()){
+                if(i != null){
+                    g.drawString(i.getName()+" Count: "+i.getCount(),20,120+a*20);
+                    a++;
+                }
+            }   
         }
     }
+    //returns the scale on the map view
     public int getScale(){
         return scale;
     }
