@@ -47,6 +47,17 @@ public class Game{
         viewBoxCords = new double[2];
         screenScale = ss;
     }
+    public ArrayList<Image> getTextures(){
+        ArrayList<Image> textures = new ArrayList<Image>();
+        Toolkit tool = Toolkit.getDefaultToolkit();
+        textures.add(tool.getImage("grass.png"));
+        System.out.println("loaded grass texture");
+        textures.add(tool.getImage("dirt.png"));
+        System.out.println("loaded dirt texture");
+        textures.add(tool.getImage("stone.png"));
+        System.out.println("loaded stone texture");
+        return textures;
+    }
     //generates the word including cave systems
     public void generateWorld(int w, int h){
         Noise noise = new Noise();
@@ -182,6 +193,10 @@ public class Game{
             }
         }
     }
+    //sets the hotbar item that you what to use
+    public void setPlayerHotbarItemSelected(int hbis){
+        player.setHotBarItemSelected(hbis);
+    }
     //returns screenNum (what view the display class is showing)
     public void setScreenNum(int sn){
         screenNum = sn;
@@ -245,5 +260,9 @@ public class Game{
     //returns the player's inventory
     public Item[] getPlayerInventory(){
         return player.getInventory();
+    }
+    //gets the player hotbar
+    public Item[] getPlayerHotbar(){
+        return player.getHotbar();
     }
 }

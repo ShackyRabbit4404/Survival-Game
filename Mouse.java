@@ -20,6 +20,6 @@ public class Mouse implements MouseListener{
 
     }
     public void mouseClicked(MouseEvent e) {
-
+        
     }
 }

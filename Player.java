@@ -71,6 +71,10 @@ public class Player{
             inventory[i] = a;
         }
     }
+    //sets which item you are using in your hotbar
+    public void setHotBarItemSelected(int hbis){
+        hotbarItemSelected = hbis;
+    }
     //removes the decimal places on the y cordinate
     public void intVertical(boolean a){
         verticalVelocity = 0;

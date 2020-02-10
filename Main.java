@@ -27,8 +27,10 @@ public class Main{
         //Creates the user input classes
         Keyboard keyboard = new Keyboard(game);
         Mouse mouse = new Mouse(game,screen);
+        MouseScrollWheel mouseWheel = new MouseScrollWheel(game);
         frame.addKeyListener(keyboard);
         frame.addMouseListener(mouse);
+        frame.addMouseWheelListener(mouseWheel);
         //Starts the game 
         new Thread(new FrameThread(screen,frameRate)).start();
         new Thread(new UpdateRate(game,updateRate)).start();

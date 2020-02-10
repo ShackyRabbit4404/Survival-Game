@@ -3,12 +3,14 @@ public class Item{
     private boolean stackable;
     private int stackCount;
     private int maxStackCount;
+    private int textureNum;
     //constructor method
     public Item(String n,int sc){
         name = n;
         stackCount = sc;
         maxStackCount = 64;
         stackable = true;
+        textureNum = 0;
     }
     //returns the name of the object
     public String getName(){

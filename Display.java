@@ -1,11 +1,13 @@
 import java.awt.*;
 import javax.swing.*;
+import java.util.*;
 public class Display extends JComponent{
     private int width;
     private int height;
     private Game game;
     private int[][] world;
     private int scale;
+    private ArrayList<Image> textures;
     //constructor method
     public Display(int w, int h, Game g,int s){
         super();
@@ -15,6 +17,16 @@ public class Display extends JComponent{
         game = g;
         world = game.getWorld();
         scale = s;
+        textures = new ArrayList<Image>();
+        scaleTextures(game.getTextures());
+    }
+    
+    public void scaleTextures(ArrayList<Image> tempT){
+        double s = game.getPlayerViewScale();
+        System.out.println("Textures scaled to "+s+" x "+s);
+        for(Image i : tempT){
+            textures.add(i.getScaledInstance((int)s+1,(int)s+1,0));
+        }
     }
     //calls the draw method
     public void draw(){
@@ -58,6 +70,8 @@ public class Display extends JComponent{
             for(int x = 0; x < viewPlane.length;x++){
                 for(int y = 0; y < viewPlane[0].length;y++){
                     if(viewPlane[x][y] != 0){
+                        g.drawImage(textures.get(viewPlane[x][y]-1),(int)(((double)x-(viewBoxCords[0]%1))*playerViewScale),(int)(((double)y-(viewBoxCords[1]%1))*playerViewScale),this);
+                        /*
                         if(viewPlane[x][y] == 1){
                             g.setColor(Color.GREEN);
                         }
@@ -68,6 +82,7 @@ public class Display extends JComponent{
                             g.setColor(new Color(105,105,105));
                         }
                         g.fillRect((int)(((double)x-(viewBoxCords[0]%1))*playerViewScale),(int)(((double)y-(viewBoxCords[1]%1))*playerViewScale),(int)(playerViewScale+0.5),(int)(playerViewScale+0.5));
+                        */
                     }
                 }
             }
@@ -86,6 +101,19 @@ public class Display extends JComponent{
                     a++;
                 }
             }   
+            g.setColor(new Color(100,100,100,95));
+            g.fillRect((int)(0.09*viewPlane.length*playerViewScale),(int)(0.8*viewPlane[0].length*playerViewScale),(int)(0.82*viewPlane.length*playerViewScale),(int)(0.12*viewPlane[0].length*playerViewScale));
+            g.setColor(Color.WHITE);
+            for(int i = 0; i < game.getPlayerHotbar().length;i++){
+                if(i == game.getPlayer().getHotbarItemSelected()){
+                    g.setColor(Color.BLACK);
+                    g.fillRect((int)(0.11*viewPlane.length*playerViewScale)+(int)(i*0.08*viewPlane.length*playerViewScale),(int)(0.81*viewPlane[0].length*playerViewScale),(int)(0.06*playerViewScale*viewPlane.length),(int)(0.1*viewPlane[0].length*playerViewScale));
+                    g.setColor(Color.WHITE);
+                }
+                else{
+                    g.fillRect((int)(0.11*viewPlane.length*playerViewScale)+(int)(i*0.08*viewPlane.length*playerViewScale),(int)(0.81*viewPlane[0].length*playerViewScale),(int)(0.06*playerViewScale*viewPlane.length),(int)(0.1*viewPlane[0].length*playerViewScale));
+                }
+            }
         }
     }
     //returns the scale on the map view
