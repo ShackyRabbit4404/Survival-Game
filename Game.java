@@ -21,6 +21,7 @@ public class Game{
     //0 = up, 1 = down, 2 = right, 3 = left
     private boolean[] keys;
     public int screenScale;
+    private boolean invenVis;
     //constructor method
     public Game(int w, int h,double hi,double ci,double cwt,int sw,int sh,int ss){
         screenNum = 2;
@@ -46,6 +47,7 @@ public class Game{
         playerView = new int[playerViewRange*2+player.getDimentions()[0]+1][blocksUp*2+player.getDimentions()[1]+1];
         viewBoxCords = new double[2];
         screenScale = ss;
+        invenVis = false;
     }
     public ArrayList<Image> getTextures(){
         ArrayList<Image> textures = new ArrayList<Image>();
@@ -179,19 +181,25 @@ public class Game{
             if(playerView[x][y] != 0){
                 if(playerView[x][y] == 1){
                     System.out.println("Removing grassy dirt");
-                    player.addItem(new Item("Dirt",1));
+                    player.addItem(new Item("Dirt",1,1));
                 }
                 else if(playerView[x][y] == 2){
                     System.out.println("Removing dirt");
-                    player.addItem(new Item("Dirt",1));
+                    player.addItem(new Item("Dirt",1,1));
                 }
                 else if(playerView[x][y] == 3){
                     System.out.println("Removing stone");
-                    player.addItem(new Item("Stone",1));
+                    player.addItem(new Item("Stone",1,2));
                 }
                 world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = 0;
             }
         }
+    }
+    public void setInvenVis(boolean v){
+        invenVis = v;
+    }
+    public boolean isInvenVisible(){
+        return invenVis;
     }
     //sets the hotbar item that you what to use
     public void setPlayerHotbarItemSelected(int hbis){

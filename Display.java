@@ -114,6 +114,20 @@ public class Display extends JComponent{
                     g.fillRect((int)(0.11*viewPlane.length*playerViewScale)+(int)(i*0.08*viewPlane.length*playerViewScale),(int)(0.81*viewPlane[0].length*playerViewScale),(int)(0.06*playerViewScale*viewPlane.length),(int)(0.1*viewPlane[0].length*playerViewScale));
                 }
             }
+            if(game.isInvenVisible()){
+                int rowLength = 10;
+                g.setColor(new Color(100,100,100,180));
+                g.fillRect((int)(0.05*viewPlane.length*playerViewScale),(int)(0.05*viewPlane[0].length*playerViewScale),(int)(0.9*viewPlane.length*playerViewScale),(int)(0.7*viewPlane[0].length*playerViewScale));
+                g.setColor(Color.WHITE);
+                int count = 0; 
+                for(Item i: game.getPlayerInventory()){
+                    if(i!=null){
+                        g.drawImage(textures.get(i.getTextureNum()),(int)(0.07*viewPlane.length*playerViewScale)+(int)((count%rowLength)*0.04*viewPlane.length*playerViewScale),(int)(0.07*viewPlane.length*playerViewScale)+(int)((int)(count/rowLength)*0.03*viewPlane.length*playerViewScale),this);
+                        g.drawString("x"+i.getCount(),(int)(0.1*viewPlane.length*playerViewScale)+(int)((count%rowLength)*0.04*viewPlane.length*playerViewScale),(int)(0.085*viewPlane.length*playerViewScale)+(int)((int)(count/rowLength)*0.03*viewPlane.length*playerViewScale));
+                        count++;
+                    }
+                }
+            }
         }
     }
     //returns the scale on the map view

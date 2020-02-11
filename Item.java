@@ -2,15 +2,15 @@ public class Item{
     String name;
     private boolean stackable;
     private int stackCount;
-    private int maxStackCount;
+    private int maxStackCount; 
     private int textureNum;
     //constructor method
-    public Item(String n,int sc){
+    public Item(String n,int sc,int tn){
         name = n;
         stackCount = sc;
         maxStackCount = 64;
         stackable = true;
-        textureNum = 0;
+        textureNum = tn;
     }
     //returns the name of the object
     public String getName(){
@@ -36,4 +36,7 @@ public class Item{
     public void decreaseStack(int s){
         stackCount -= s;
     }   
+    public int getTextureNum(){
+        return textureNum;
+    }
 }

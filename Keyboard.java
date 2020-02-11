@@ -24,6 +24,9 @@ public class Keyboard extends KeyAdapter{
         if(key == KeyEvent.VK_M){
             game.setScreenNum(2);
         }
+        if(key == KeyEvent.VK_E){
+            game.setInvenVis(!game.isInvenVisible());
+        }
         if(key == KeyEvent.VK_1){
             game.setPlayerHotbarItemSelected(0);
         }
