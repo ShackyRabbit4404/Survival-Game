@@ -70,6 +70,9 @@ public class Player{
             }
             inventory[i] = a;
         }
+        if(hotbar[hotbarItemSelected] == null){
+            hotbar[hotbarItemSelected] = a;
+        }
     }
     //sets which item you are using in your hotbar
     public void setHotBarItemSelected(int hbis){

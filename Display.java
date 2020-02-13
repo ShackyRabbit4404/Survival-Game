@@ -113,6 +113,9 @@ public class Display extends JComponent{
                 else{
                     g.fillRect((int)(0.11*viewPlane.length*playerViewScale)+(int)(i*0.08*viewPlane.length*playerViewScale),(int)(0.81*viewPlane[0].length*playerViewScale),(int)(0.06*playerViewScale*viewPlane.length),(int)(0.1*viewPlane[0].length*playerViewScale));
                 }
+                if(game.getPlayer().getHotbar()[i] != null){
+                    g.drawImage(textures.get(game.getPlayer().getHotbar()[i].getTextureNum()),(int)(0.125*viewPlane.length*playerViewScale)+(int)(i*0.085*viewPlane.length*playerViewScale),(int)(0.83*viewPlane[0].length*playerViewScale),this);
+                }
             }
             if(game.isInvenVisible()){
                 int rowLength = 10;
