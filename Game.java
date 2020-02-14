@@ -174,22 +174,37 @@ public class Game{
     public void clicked(int x, int y, int clickNum){
         System.out.println("Width: "+playerView.length+" Height: "+playerView[0].length);
         if(screenNum == 1){
-            System.out.println("Before scaled down X: "+x+" Y: "+y);
+            //System.out.println("Before scaled down X: "+x+" Y: "+y);
             x = (int)((x+((viewBoxCords[0]%1)*playerViewScale))/playerViewScale);
             y = (int)((y-29+((viewBoxCords[1]%1)*playerViewScale))/playerViewScale);
-            System.out.println("After scaled down X:"+x+" Y: "+y);
-            if(playerView[x][y] != 0){
+            //System.out.println("After scaled down X:"+x+" Y: "+y);
+            System.out.println("Block clicked on: "+playerView[x][y]);
+            System.out.println("Hotbar item in use: "+player.getHotbar()[player.getHotbarItemSelected()]);
+            if(playerView[x][y] == 0 && clickNum == 3 && player.getHotbar()[player.getHotbarItemSelected()] != null && player.getHotbar()[player.getHotbarItemSelected()].isPlacable()){
+                System.out.println("trying to place a block");
+                world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = player.getHotbar()[player.getHotbarItemSelected()].getTextureNum()+1;
+                player.getHotbar()[player.getHotbarItemSelected()].decreaseStack(1);
+                if(player.getHotbar()[player.getHotbarItemSelected()].getCount() == 0){
+                    for(int i = 0; i < player.getInventory().length;i++){
+                        if(player.getInventory()[i] == player.getHotbar()[player.getHotbarItemSelected()]){
+                            player.getInventory()[i] = null;
+                        }
+                    }
+                    player.getHotbar()[player.getHotbarItemSelected()] = null;
+                }
+            }
+            if(playerView[x][y] != 0 && clickNum == 1){
                 if(playerView[x][y] == 1){
                     System.out.println("Removing grassy dirt");
-                    player.addItem(new Item("Dirt",1,1));
+                    player.addItem(new Item("Dirt",1,1,true,true));
                 }
                 else if(playerView[x][y] == 2){
                     System.out.println("Removing dirt");
-                    player.addItem(new Item("Dirt",1,1));
+                    player.addItem(new Item("Dirt",1,1,true,true));
                 }
                 else if(playerView[x][y] == 3){
                     System.out.println("Removing stone");
-                    player.addItem(new Item("Stone",1,2));
+                    player.addItem(new Item("Stone",1,1,true,true));
                 }
                 world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = 0;
             }

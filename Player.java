@@ -74,6 +74,13 @@ public class Player{
             hotbar[hotbarItemSelected] = a;
         }
     }
+    //removes a specifc amount of an item from the inventory
+    public void removeItem(Item i, int quantity){
+        i.decreaseStack(quantity);
+        if(i.getCount() <= 0){
+            i = null;
+        }
+    }
     //sets which item you are using in your hotbar
     public void setHotBarItemSelected(int hbis){
         hotbarItemSelected = hbis;
