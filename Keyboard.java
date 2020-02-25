@@ -25,7 +25,12 @@ public class Keyboard extends KeyAdapter{
             game.setScreenNum(2);
         }
         if(key == KeyEvent.VK_E){
+            game.setCraftingVis(false);
             game.setInvenVis(!game.isInvenVisible());
+        }
+        if(key == KeyEvent.VK_Q){
+            game.setInvenVis(false);
+            game.setCraftingVis(!game.isCraftingVisible());
         }
         if(key == KeyEvent.VK_1){
             game.setPlayerHotbarItemSelected(0);

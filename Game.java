@@ -22,6 +22,7 @@ public class Game{
     private boolean[] keys;
     public int screenScale;
     private boolean invenVis;
+    private boolean craftingVis;
     //constructor method
     public Game(int w, int h,double hi,double ci,double cwt,int sw,int sh,int ss){
         screenNum = 2;
@@ -180,7 +181,7 @@ public class Game{
             //System.out.println("After scaled down X:"+x+" Y: "+y);
             System.out.println("Block clicked on: "+playerView[x][y]);
             System.out.println("Hotbar item in use: "+player.getHotbar()[player.getHotbarItemSelected()]);
-            if(playerView[x][y] == 0 && clickNum == 3 && player.getHotbar()[player.getHotbarItemSelected()] != null && player.getHotbar()[player.getHotbarItemSelected()].isPlacable()){
+            if(playerView[x][y] == 0 && clickNum == 3 && player.getHotbar()[player.getHotbarItemSelected()] != null && player.getHotbar()[player.getHotbarItemSelected()].isPlacable() && hasAdjacentBlocks(x,y)){
                 System.out.println("trying to place a block");
                 world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = player.getHotbar()[player.getHotbarItemSelected()].getTextureNum()+1;
                 player.getHotbar()[player.getHotbarItemSelected()].decreaseStack(1);
@@ -204,11 +205,27 @@ public class Game{
                 }
                 else if(playerView[x][y] == 3){
                     System.out.println("Removing stone");
-                    player.addItem(new Item("Stone",1,1,true,true));
+                    player.addItem( new Item("Stone",1,1,true,true));
                 }
                 world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = 0;
             }
         }
+    }
+    public boolean hasAdjacentBlocks(int x, int y){
+        for(int a = -1; a < 2; a++){
+            for(int b = -1; b < 2; b++){
+                if(playerView[x+a][y+b] != 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public void setCraftingVis(boolean v){
+        craftingVis = v;
+    }
+    public boolean isCraftingVisible(){
+        return craftingVis;
     }
     public void setInvenVis(boolean v){
         invenVis = v;

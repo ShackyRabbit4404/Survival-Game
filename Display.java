@@ -120,7 +120,7 @@ public class Display extends JComponent{
             if(game.isInvenVisible()){
                 int rowLength = 10;
                 g.setColor(new Color(100,100,100,180));
-                g.fillRect((int)(0.05*viewPlane.length*playerViewScale),(int)(0.05*viewPlane[0].length*playerViewScale),(int)(0.9*viewPlane.length*playerViewScale),(int)(0.7*viewPlane[0].length*playerViewScale));
+                g.fillRect((int)(0.05*viewPlane.length*playerViewScale),(int)(0.06*viewPlane[0].length*playerViewScale),(int)(0.9*viewPlane.length*playerViewScale),(int)(0.7*viewPlane[0].length*playerViewScale));
                 g.setColor(Color.WHITE);
                 int count = 0; 
                 for(Item i: game.getPlayerInventory()){
@@ -130,6 +130,10 @@ public class Display extends JComponent{
                         count++;
                     }
                 }
+            }
+            else if(game.isCraftingVisible()){
+                g.setColor(new Color(100,100,100,180));
+                g.fillRect((int)(0.05*viewPlane.length*playerViewScale),(int)(0.05*viewPlane[0].length*playerViewScale),(int)(0.9*viewPlane.length*playerViewScale),(int)(0.7*viewPlane[0].length*playerViewScale));
             }
         }
     }
