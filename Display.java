@@ -8,8 +8,12 @@ public class Display extends JComponent{
     private int[][] world;
     private int scale;
     private ArrayList<Image> textures;
+    private double screenWidth;
+    private double screenHeight;
+    private Font font1 = new Font("SansSerif", Font.BOLD, 25);
+    private Font font2 = new Font("SansSerif", Font.PLAIN, 10);
     //constructor method
-    public Display(int w, int h, Game g,int s){
+    public Display(int w, int h, Game g,int s,double sw, double sh){
         super();
         width = w;
         height = h;
@@ -19,6 +23,8 @@ public class Display extends JComponent{
         scale = s;
         textures = new ArrayList<Image>();
         scaleTextures(game.getTextures());
+        screenWidth = sw;
+        screenHeight = sh;
     }
     
     public void scaleTextures(ArrayList<Image> tempT){
@@ -96,6 +102,7 @@ public class Display extends JComponent{
             g.setColor(Color.RED);
             g.fillRect((int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),(int)playerViewScale*game.getPlayerDimentions()[0],(int)playerViewScale*game.getPlayerDimentions()[1]);
             g.setColor(Color.BLACK);
+            g.setFont(font2);
             g.drawString("X: "+game.getPlayerCords()[0]+" Y: "+game.getPlayerCords()[1],20,20);
             g.drawString("Seed: "+game.getSeed(),20,40);
             g.drawString("Grounded: "+game.getPlayer().getGrounded(),20,60);
@@ -142,6 +149,13 @@ public class Display extends JComponent{
                 g.setColor(new Color(100,100,100,180));
                 g.fillRect((int)(0.05*viewPlane.length*playerViewScale),(int)(0.05*viewPlane[0].length*playerViewScale),(int)(0.9*viewPlane.length*playerViewScale),(int)(0.7*viewPlane[0].length*playerViewScale));
             }
+            g.setColor(Color.BLACK);
+            g.drawRect((int)(screenWidth*0.8),(int)(screenHeight*.03),(int)(screenWidth*.18),(int)(screenHeight*0.04));
+            g.setColor(new Color((int)(255*(1-game.getPlayerHealthPercent())),(int)(255*game.getPlayerHealthPercent()),0));
+            g.fillRect((int)(screenWidth*0.8)+1,(int)(screenHeight*.03)+1,(int)(screenWidth*.18*game.getPlayerHealthPercent())-1,(int)(screenHeight*0.04)-1);
+            g.setColor(new Color(50,50,50,200));
+            g.setFont(font1);
+            g.drawString(game.getPlayerHealthPercent()*100+"%",(int)(screenWidth*.88),(int)(screenHeight*0.06));
         }
     }
     //returns the scale on the map view

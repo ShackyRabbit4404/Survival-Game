@@ -19,7 +19,7 @@ public class Main{
         int worldHeight = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/screenScale);
         Game game = new Game(worldWidth,worldHeight,hillIntensity,caveIntensity,caveWallThickness,(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(),(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight(),screenScale);
         //Display class draws the graphics
-        Display screen = new Display(worldWidth,worldWidth,game,screenScale);
+        Display screen = new Display(worldWidth,worldWidth,game,screenScale,Toolkit.getDefaultToolkit().getScreenSize().getWidth(),Toolkit.getDefaultToolkit().getScreenSize().getHeight());
         frame.add(screen);
         //number of times per second
         int frameRate = 30;

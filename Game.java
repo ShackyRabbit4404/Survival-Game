@@ -321,4 +321,11 @@ public class Game{
     public Item[] getPlayerHotbar(){
         return player.getHotbar();
     }
+    //gets the player health
+    public double getPlayerHealthPercent(){
+        if(player.getHealth() == player.getMaxHealth()){
+            return 1;
+        }   
+        return (player.getHealth()/player.getMaxHealth())-((player.getHealth()/player.getMaxHealth())%0.0001);
+    }
 }

@@ -15,6 +15,7 @@ public class Player{
     private double maxHealth;
     private boolean isAlive; 
     private int sightRange;
+    private HealThread healThread;
     //constructor method
     public Player(double x, double y,int vr,double ms,double jf,double g,double vv){
         cords = new double[]{x,y};
@@ -32,6 +33,9 @@ public class Player{
         hotbarItemSelected = 0;
         isAlive = true;
         sightRange = 15;
+        maxHealth = 100;
+        health = 100;
+        new Thread(healThread = new HealThread(this,maxHealth)).start();
     }
     //generates the hit box for the player and it is modular to any player dimentions
     public void genHitbox(){
@@ -62,6 +66,7 @@ public class Player{
                 if(addable >= a.getCount()){
                     i.increaseStack(a.getCount());
                     found = true;
+                    a = i;
                 }
                 else{
                     i.increaseStack(addable);
@@ -76,9 +81,17 @@ public class Player{
             }
             inventory[i] = a;
         }
-        if(hotbar[hotbarItemSelected] == null){
+        if(hotbar[hotbarItemSelected] == null && !hotbarContains(a)){
             hotbar[hotbarItemSelected] = a;
         }
+    }
+    public boolean hotbarContains(Item a ){
+        for(Item i: hotbar){
+            if(a == i){
+                return true;
+            }
+        }
+        return false;
     }
     public boolean isAlive(){
         return isAlive;
@@ -105,13 +118,15 @@ public class Player{
         if(health <= 0){
             die();
         }
+        else if(health > maxHealth){
+            health = maxHealth;
+        }
     }
     public void die(){
         isAlive = false;
     }
     //removes the decimal places on the y cordinate
     public void intVertical(boolean a){
-        verticalVelocity = 0;
         if(a)
             cords[1] = (double)((int)(cords[1]));
         else
@@ -156,6 +171,9 @@ public class Player{
     //adjust varibles to react when the player hits the ground
     public void land(){
         grounded = true;
+        if(verticalVelocity > 16){
+            changeHealth(-1*Math.pow(verticalVelocity-16,1.5));
+        }
         verticalVelocity = 0;
     }
     //adjust varibles to react when the player is falling
@@ -202,5 +220,9 @@ public class Player{
     //returns the dimentions of the player
     public int[] getDimentions(){
         return dimentions;
+    }
+    //gets the players max health
+    public double getMaxHealth(){
+        return maxHealth;
     }
 }

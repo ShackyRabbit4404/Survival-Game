@@ -11,11 +11,23 @@ public class HealThread implements Runnable{
         maxHealth = mh;
         coolDown = 0;
         waitBetweenHeals = 5;
-        
+        healthRegenPerRound = maxHealth*0.05;
     }
     public void run(){
-        while(true){
-            
+        while(player.isAlive()){
+            try{
+                Thread.sleep(1000);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            if(coolDown > 0){
+                coolDown--;
+            }
+            else if(player.getHealth() != maxHealth){
+                player.changeHealth(healthRegenPerRound);
+                coolDown = waitBetweenHeals;
+            }
         }
     }
 }
