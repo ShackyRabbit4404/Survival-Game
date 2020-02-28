@@ -218,7 +218,7 @@ public class Game{
                 }
                 else if(playerView[x][y] == 3){
                     System.out.println("Removing stone");
-                    player.addItem( new Item("Stone",1,1,true,true));
+                    player.addItem( new Item("Stone",1,2,true,true));
                 }
                 world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = 0;
             }
