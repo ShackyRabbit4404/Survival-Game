@@ -11,6 +11,10 @@ public class Player{
     private Item[] inventory;
     private Item[] hotbar;
     private int hotbarItemSelected;
+    private double health;
+    private double maxHealth;
+    private boolean isAlive; 
+    private int sightRange;
     //constructor method
     public Player(double x, double y,int vr,double ms,double jf,double g,double vv){
         cords = new double[]{x,y};
@@ -26,6 +30,8 @@ public class Player{
         inventory = new Item[20];
         hotbar = new Item[10];
         hotbarItemSelected = 0;
+        isAlive = true;
+        sightRange = 15;
     }
     //generates the hit box for the player and it is modular to any player dimentions
     public void genHitbox(){
@@ -74,6 +80,9 @@ public class Player{
             hotbar[hotbarItemSelected] = a;
         }
     }
+    public boolean isAlive(){
+        return isAlive;
+    }
     //removes a specifc amount of an item from the inventory
     public void removeItem(Item i, int quantity){
         i.decreaseStack(quantity);
@@ -81,9 +90,24 @@ public class Player{
             i = null;
         }
     }
+    public double[] getTrueLoc(){
+        return new double[]{cords[0]+(dimentions[0]/2.0),cords[1]+(dimentions[1]/2.0)};
+    }
     //sets which item you are using in your hotbar
     public void setHotBarItemSelected(int hbis){
         hotbarItemSelected = hbis;
+    }
+    public double getHealth(){
+        return health;
+    }
+    public void changeHealth(double hc){
+        health += hc;
+        if(health <= 0){
+            die();
+        }
+    }
+    public void die(){
+        isAlive = false;
     }
     //removes the decimal places on the y cordinate
     public void intVertical(boolean a){
@@ -104,6 +128,10 @@ public class Player{
     //returns wether the player is grounded
     public boolean getGrounded(){
         return grounded;
+    }
+    //get the sight range
+    public int getSightRange(){
+        return sightRange;
     }
     //sets the vertical velocity to the jump force
     public void jump(){

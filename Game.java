@@ -5,6 +5,7 @@ public class Game{
     private int screenNum;
     //0 = empty, 1 = grassy dirt, 2 = dirt, 3 = stone
     private int[][] world;
+    private int[][] discoverdWorld;    
     private int[][] playerView;
     private double[] viewBoxCords;
     private double hillIntensity;
@@ -23,6 +24,7 @@ public class Game{
     public int screenScale;
     private boolean invenVis;
     private boolean craftingVis;
+    private double reachRadius;
     //constructor method
     public Game(int w, int h,double hi,double ci,double cwt,int sw,int sh,int ss){
         screenNum = 2;
@@ -49,6 +51,8 @@ public class Game{
         viewBoxCords = new double[2];
         screenScale = ss;
         invenVis = false;
+        reachRadius = 8;
+        
     }
     public ArrayList<Image> getTextures(){
         ArrayList<Image> textures = new ArrayList<Image>();
@@ -65,6 +69,7 @@ public class Game{
     public void generateWorld(int w, int h){
         Noise noise = new Noise();
         world = new int[w][h];
+        discoverdWorld = new int[w][h];
         seed = 1000000*Math.random();
         System.out.println("Hill Intensity: "+hillIntensity+" Cave Intensity: "+caveIntensity);
         //generates screen terrain based on the seed
@@ -89,6 +94,7 @@ public class Game{
             }
         }
     }
+     
     //updates the game values (player position, and user input)
     public void update(double delay){
         if(keys[0] && player.getGrounded() && player.getCords()[1] > 0){
@@ -154,6 +160,9 @@ public class Game{
         for(int x = 0; x < playerView.length;x++){
             for(int y = 0; y < playerView[0].length;y++){
                 playerView[x][y] = world[(int)(viewBoxCords[0])+x][(int)(viewBoxCords[1])+y];
+                if(distance(new int[]{x,y}, new int[]{(int)(playerView.length/2),(int)(playerView[1].length/2)}) <= player.getSightRange() && discoverdWorld[x+(int)viewBoxCords[0]][y+(int)viewBoxCords[1]] == 0){
+                    discoverdWorld[x+(int)viewBoxCords[0]][y+(int)viewBoxCords[1]] = 1;
+                }
             }
         }
     }
@@ -171,6 +180,9 @@ public class Game{
         }
         return false;
     }
+    public int[][] getDiscoverdWorld(){
+        return discoverdWorld;
+    }
     //reacts to when and where the player clicks
     public void clicked(int x, int y, int clickNum){
         System.out.println("Width: "+playerView.length+" Height: "+playerView[0].length);
@@ -181,7 +193,8 @@ public class Game{
             //System.out.println("After scaled down X:"+x+" Y: "+y);
             System.out.println("Block clicked on: "+playerView[x][y]);
             System.out.println("Hotbar item in use: "+player.getHotbar()[player.getHotbarItemSelected()]);
-            if(playerView[x][y] == 0 && clickNum == 3 && player.getHotbar()[player.getHotbarItemSelected()] != null && player.getHotbar()[player.getHotbarItemSelected()].isPlacable() && hasAdjacentBlocks(x,y)){
+            System.out.println("Distance to block clicked on: "+distance(new int[]{playerView.length/2,playerView[0].length/2},new int[]{x,y}));
+            if(playerView[x][y] == 0 && clickNum == 3 && player.getHotbar()[player.getHotbarItemSelected()] != null && player.getHotbar()[player.getHotbarItemSelected()].isPlacable() && hasAdjacentBlocks(x,y)&& distance(new int[]{playerView.length/2,playerView[0].length/2},new int[]{x,y}) <= reachRadius){
                 System.out.println("trying to place a block");
                 world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = player.getHotbar()[player.getHotbarItemSelected()].getTextureNum()+1;
                 player.getHotbar()[player.getHotbarItemSelected()].decreaseStack(1);
@@ -194,7 +207,7 @@ public class Game{
                     player.getHotbar()[player.getHotbarItemSelected()] = null;
                 }
             }
-            if(playerView[x][y] != 0 && clickNum == 1){
+            if(playerView[x][y] != 0 && clickNum == 1 && distance(new int[]{playerView.length/2,playerView[0].length/2},new int[]{x,y}) <= reachRadius){
                 if(playerView[x][y] == 1){
                     System.out.println("Removing grassy dirt");
                     player.addItem(new Item("Dirt",1,1,true,true));
@@ -210,6 +223,9 @@ public class Game{
                 world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = 0;
             }
         }
+    }
+    public double distance(int[] pointOne, int[] pointTwo){
+        return Math.sqrt(Math.pow(((double)pointTwo[0]-(double)pointOne[0]),2)+Math.pow(((double)pointTwo[1]-(double)pointOne[1]),2));
     }
     public boolean hasAdjacentBlocks(int x, int y){
         for(int a = -1; a < 2; a++){

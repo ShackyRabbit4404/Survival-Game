@@ -35,13 +35,16 @@ public class Display extends JComponent{
     //draws the graphcs on the screen
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.setColor(Color.CYAN);
+        g.setColor(Color.BLACK);
         g.fillRect(0,0,width*scale,height*scale);
         if(game.getWindowNum() == 2){
             for(int x = 0; x < world.length*scale; x+=scale){
                 for(int y = 0; y < world[0].length*scale; y+= scale){
-                    if(world[x/scale][y/scale] != 0){
-                        if(world[x/scale][y/scale] == 1){
+                    if(game.getDiscoverdWorld()[x/scale][y/scale] == 1){
+                        if(world[x/scale][y/scale] == 0){
+                            g.setColor(Color.CYAN);
+                        }
+                        else if(world[x/scale][y/scale] == 1){
                             g.setColor(Color.GREEN);
                         }
                         else if(world[x/scale][y/scale] == 2){
@@ -67,9 +70,10 @@ public class Display extends JComponent{
             int[][] viewPlane = game.getPlayerView();
             double playerViewScale = game.getPlayerViewScale();
             double[] viewBoxCords = game.getViewBoxCords();
+            g.setColor(Color.CYAN);
             for(int x = 0; x < viewPlane.length;x++){
                 for(int y = 0; y < viewPlane[0].length;y++){
-                    if(viewPlane[x][y] != 0){
+                    if(viewPlane[x][y] != 0 && game.getDiscoverdWorld()[x+(int)viewBoxCords[0]][y+(int)viewBoxCords[1]] == 1){
                         g.drawImage(textures.get(viewPlane[x][y]-1),(int)(((double)x-(viewBoxCords[0]%1))*playerViewScale),(int)(((double)y-(viewBoxCords[1]%1))*playerViewScale),this);
                         /*
                         if(viewPlane[x][y] == 1){
@@ -83,6 +87,9 @@ public class Display extends JComponent{
                         }
                         g.fillRect((int)(((double)x-(viewBoxCords[0]%1))*playerViewScale),(int)(((double)y-(viewBoxCords[1]%1))*playerViewScale),(int)(playerViewScale+0.5),(int)(playerViewScale+0.5));
                         */
+                    }
+                    else if(viewPlane[x][y] == 0 && game.getDiscoverdWorld()[x+(int)viewBoxCords[0]][y+(int)viewBoxCords[1]] == 1){
+                        g.fillRect((int)(((double)x-(viewBoxCords[0]%1))*playerViewScale),(int)(((double)y-(viewBoxCords[1]%1))*playerViewScale),(int)(playerViewScale+1),(int)(playerViewScale+1));
                     }
                 }
             }

@@ -6,7 +6,7 @@ public class UpdateRate implements Runnable{
         updatesPerSecond = ups;
     }
     public void run(){
-        while(true){
+        while(game.getPlayer().isAlive()){
             new Thread(new Update(game,1.0/(double)updatesPerSecond)).start();
             try{
                 Thread.sleep(1000/updatesPerSecond);
