@@ -28,6 +28,7 @@ public class Game{
     private ArrayList<Item> craftables;
     private DamagedBlock recentlyHit;
     private Display screen;
+    private boolean facingRight;
     //constructor method
     public Game(int w, int h,double hi,double ci,double cwt,int sw,int sh,int ss){
         screenNum = 2;
@@ -57,6 +58,7 @@ public class Game{
         reachRadius = 8;
         recentlyHit = null;
         screen = null;
+        facingRight = true;
     }
     public void setScreen(Display s){
         screen = s;
@@ -80,8 +82,16 @@ public class Game{
         textures.add(tool.getImage("stone.png"));
         System.out.println("loaded stone texture");
         //texture num 3
-        textures.add(tool.getImage("player.png"));
+        textures.add(tool.getImage("playerRight.png"));
+        //texture num 4
+        textures.add(tool.getImage("playerLeft.png"));
         return textures;
+    }
+    public void setFacingRight(boolean fr){
+        facingRight = fr;
+    }
+    public boolean isFacingRight(){
+        return facingRight;
     }
     //generates the word including cave systems
     public void generateWorld(int w, int h){
@@ -340,10 +350,12 @@ public class Game{
     //returns if the player moving right key is pressed
     public void movingRight(boolean right){
         keys[2] = right;
+        facingRight = true;
     }
     //returns if the player moving left key is pressed
     public void movingLeft(boolean left){
         keys[3] = left;
+        facingRight = false;
     }
     //returns the view that the display class shows
     public int getWindowNum(){

@@ -36,7 +36,7 @@ public class Display extends JComponent{
         System.out.println("Textures scaled to "+s+" x "+s);
         int count = 0;
         for(Image i : tempT){
-            if(count != 3)
+            if(count != 3 && count != 4)
                 textures.add(i.getScaledInstance((int)s+1,(int)s+1,0));
             else
                 textures.add(i.getScaledInstance((int)s*2+1,(int)s*3+1,0));
@@ -114,7 +114,12 @@ public class Display extends JComponent{
             }
             //g.setColor(Color.RED);
             //g.fillRect((int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),(int)playerViewScale*game.getPlayerDimentions()[0],(int)playerViewScale*game.getPlayerDimentions()[1]);
-            g.drawImage(textures.get(3),(int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),this);
+            if(game.isFacingRight()){
+                g.drawImage(textures.get(3),(int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),this);
+            }
+            else{
+                g.drawImage(textures.get(4),(int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),this);
+            }
             g.setColor(Color.BLACK);
             g.setFont(font2);
             g.drawString("X: "+game.getPlayerCords()[0]+" Y: "+game.getPlayerCords()[1],20,20);
