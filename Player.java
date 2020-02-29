@@ -28,7 +28,7 @@ public class Player{
         verticalVelocity = vv;
         grounded = false;
         genHitbox();
-        inventory = new Item[20];
+        inventory = new Item[30];
         hotbar = new Item[10];
         hotbarItemSelected = 0;
         isAlive = true;
@@ -107,6 +107,16 @@ public class Player{
         return new double[]{cords[0]+(dimentions[0]/2.0),cords[1]+(dimentions[1]/2.0)};
     }
     //sets which item you are using in your hotbar
+    public void setHotBarItem(int index,Item i){
+        if(hotbarContains(i)){
+            for(int a = 0; a < hotbar.length; a++){
+                if(hotbar[a] == i){
+                    hotbar[a] = null;
+                }
+            }
+        }
+        hotbar[index] = i;
+    }
     public void setHotBarItemSelected(int hbis){
         hotbarItemSelected = hbis;
     }

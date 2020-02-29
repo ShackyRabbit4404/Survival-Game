@@ -188,11 +188,15 @@ public class Game{
         System.out.println("Width: "+playerView.length+" Height: "+playerView[0].length);
         if(screenNum == 1){
             if(craftingVis){
-                x -= (int)(screenWidth*0.07);
-                y -= (int)(screenHeight*0.085);
+                
             }
             else if(invenVis){
-                
+                x -= (int)(screenWidth*0.08);
+                y -= (int)(screenHeight*0.11);
+                System.out.println("X: "+x+" Y: "+y+" Player View Scale: "+playerViewScale+" ");
+                if(x%(screenWidth*0.085) <= playerViewScale && x >= 0 && y%(screenHeight*0.085) < playerViewScale && y >= 0 && x < screenWidth*0.085*10 && y < screenHeight*0.085*3 && player.getInventory()[(int)(x/(screenWidth*0.085))+10*((int)(y/(screenHeight*0.085)))] != null){
+                    player.setHotBarItem(player.getHotbarItemSelected(),player.getInventory()[(int)(x/(screenWidth*0.085))+10*((int)(y/(screenHeight*0.085)))]);
+                }
             }
             else{
                 //System.out.println("Before scaled down X: "+x+" Y: "+y);

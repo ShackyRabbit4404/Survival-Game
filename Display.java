@@ -139,8 +139,8 @@ public class Display extends JComponent{
                 int count = 0; 
                 for(Item i: game.getPlayerInventory()){
                     if(i!=null){
-                        g.drawImage(textures.get(i.getTextureNum()),(int)(0.07*screenWidth)+(int)((count%rowLength)*0.04*screenWidth),(int)(0.08*screenHeight)+(int)((int)(count/rowLength)*0.03*screenHeight),this);
-                        g.drawString("x"+i.getCount(),(int)(0.1*screenWidth)+(int)((count%rowLength)*0.04*screenWidth),(int)(0.085*screenHeight)+(int)((int)(count/rowLength)*0.03*screenHeight));
+                        g.drawImage(textures.get(i.getTextureNum()),(int)(0.08*screenWidth)+(int)((count%rowLength)*0.085*screenWidth),(int)(0.085*screenHeight)+(int)((int)(count/rowLength)*0.085*screenHeight),this);
+                        g.drawString("x"+i.getCount(),(int)(0.11*screenWidth)+(int)((count%rowLength)*0.085*screenWidth),(int)(0.096*screenHeight)+(int)((int)(count/rowLength)*0.085*screenHeight));
                         count++;
                     }
                 }
