@@ -5,14 +5,27 @@ public class Item{
     private int stackCount;
     private int maxStackCount; 
     private int textureNum;
+    private String type;
+    private String weakness;
     //constructor method
-    public Item(String n,int sc,int tn,boolean s,boolean p){
+    public Item(String n,String t ,int sc,int tn,boolean s,boolean p){
         name = n;
+        type = t;
         stackCount = sc;
         maxStackCount = 64;
         stackable = s;
         placable = p;
         textureNum = tn;
+    }
+    public String getWeakness(){
+        return type.substring(type.indexOf("weakness:")+9,type.substring(type.indexOf("weakness:")).indexOf("-")+type.indexOf("weakness:"));
+    }
+    public int getDamage(String damageType){
+        //System.out.println(type.substring(type.indexOf(damageType)+1+damageType.length(),type.substring(type.indexOf(damageType)).indexOf("-"))+typ.index);
+        return Integer.parseInt(type.substring(type.indexOf(damageType)+1+damageType.length(),type.substring(type.indexOf(damageType)).indexOf("-")+type.indexOf(damageType)));
+    }
+    public Item getClone(){
+        return new Item(name,type,stackCount,textureNum,stackable,placable);
     }
     //Says wether the item can be placed or not
     public boolean isPlacable(){

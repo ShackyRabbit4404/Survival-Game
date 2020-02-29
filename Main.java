@@ -21,6 +21,7 @@ public class Main{
         //Display class draws the graphics
         Display screen = new Display(worldWidth,worldWidth,game,screenScale,Toolkit.getDefaultToolkit().getScreenSize().getWidth(),Toolkit.getDefaultToolkit().getScreenSize().getHeight());
         frame.add(screen);
+        game.setScreen(screen);
         //number of times per second
         int frameRate = 30;
         int updateRate = 30;

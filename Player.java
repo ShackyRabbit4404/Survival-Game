@@ -59,6 +59,7 @@ public class Player{
     }
     //adds items to inventory
     public void addItem(Item a){
+        System.out.println("Block weakness: "+a.getWeakness());
         boolean found = false;
         for(Item i: inventory){
             if(i != null && i.getName().equals(a.getName())){
@@ -79,11 +80,19 @@ public class Player{
             while(i < inventory.length-1 && inventory[i] != null){
                 i++;
             }
-            inventory[i] = a;
+            if(inventory[i] == null){
+               inventory[i] = a; 
+            }
         }
         if(hotbar[hotbarItemSelected] == null && !hotbarContains(a)){
             hotbar[hotbarItemSelected] = a;
         }
+    }
+    public int getHotBarItemDamage(String type){
+        if(hotbar[hotbarItemSelected] == null){
+            return 1;
+        }
+        return hotbar[hotbarItemSelected].getDamage(type);
     }
     public boolean hotbarContains(Item a ){
         for(Item i: hotbar){
@@ -235,4 +244,5 @@ public class Player{
     public double getMaxHealth(){
         return maxHealth;
     }
+    
 }

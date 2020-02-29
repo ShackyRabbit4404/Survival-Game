@@ -25,6 +25,9 @@ public class Game{
     private boolean invenVis;
     private boolean craftingVis;
     private double reachRadius;
+    private ArrayList<Item> craftables;
+    private DamagedBlock recentlyHit;
+    private Display screen;
     //constructor method
     public Game(int w, int h,double hi,double ci,double cwt,int sw,int sh,int ss){
         screenNum = 2;
@@ -52,17 +55,32 @@ public class Game{
         screenScale = ss;
         invenVis = false;
         reachRadius = 8;
-        
+        recentlyHit = null;
+        screen = null;
+    }
+    public void setScreen(Display s){
+        screen = s;
+    }
+    public ArrayList<Item> getCraftables(){
+        ArrayList<Item> craft = new ArrayList<Item>();
+        craft.add(new Item("Stick","crafting-dig:1-mine:1-chop:1-attack:1",3,3,true,false));
+        craft.add(new Item("Wooden Axe","tool-dig:1-mine:1-chop:3-attack:2",1,4,false,false));
+        return null;
     }
     public ArrayList<Image> getTextures(){
         ArrayList<Image> textures = new ArrayList<Image>();
         Toolkit tool = Toolkit.getDefaultToolkit();
+        //texture num 0
         textures.add(tool.getImage("grass.png"));
         System.out.println("loaded grass texture");
+        //texture num 1
         textures.add(tool.getImage("dirt.png"));
         System.out.println("loaded dirt texture");
+        //texture num 2
         textures.add(tool.getImage("stone.png"));
         System.out.println("loaded stone texture");
+        //texture num 3
+        textures.add(tool.getImage("player.png"));
         return textures;
     }
     //generates the word including cave systems
@@ -220,19 +238,40 @@ public class Game{
                     }
                 }
                 if(playerView[x][y] != 0 && clickNum == 1 && distance(new int[]{playerView.length/2,playerView[0].length/2},new int[]{x,y}) <= reachRadius){
+                    boolean broke = false;
+                    if(recentlyHit == null){
+                        recentlyHit = new DamagedBlock(playerView[x][y],x,y);
+                        screen.setRecentlyHit(recentlyHit);
+                        broke = recentlyHit.dealDamage(player.getHotBarItemDamage(recentlyHit.getItem().getWeakness()));
+                    }
+                    else if(x+(int)(viewBoxCords[0]) == recentlyHit.getX()+(int)(viewBoxCords[0]) && y+(int)(viewBoxCords[1]) == recentlyHit.getY()+(int)(viewBoxCords[1])){
+                        broke = recentlyHit.dealDamage(player.getHotBarItemDamage(recentlyHit.getItem().getWeakness()));
+                    }
+                    else{
+                        recentlyHit = new DamagedBlock(playerView[x][y],x,y);
+                        screen.setRecentlyHit(recentlyHit);
+                        broke = recentlyHit.dealDamage(player.getHotBarItemDamage(recentlyHit.getItem().getWeakness()));
+                    }
+                    if(broke){
+                        player.addItem(recentlyHit.getItem().getClone());
+                        world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = 0;
+                        screen.setRecentlyHit(null);
+                    }
+                    /*
                     if(playerView[x][y] == 1){
                         System.out.println("Removing grassy dirt");
-                        player.addItem(new Item("Dirt",1,1,true,true));
+                        player.addItem(new Item("Dirt","building-dig:1-mine:1-chop:1-weakness:dig-",1,1,true,true));
                     }
                     else if(playerView[x][y] == 2){
                         System.out.println("Removing dirt");
-                        player.addItem(new Item("Dirt",1,1,true,true));
+                        player.addItem(new Item("Dirt","building-dig:1-mine:1-chop:1-weakness:dig-",1,1,true,true));
                     }
                     else if(playerView[x][y] == 3){
                         System.out.println("Removing stone");
-                        player.addItem( new Item("Stone",1,2,true,true));
+                        player.addItem( new Item("Stone","building-crafting-dig:1-mine:1-chop:1-weakness:mine-",1,2,true,true));
                     }
                     world[(int)viewBoxCords[0]+x][(int)viewBoxCords[1]+y] = 0;
+                    */
                 }
             }
         }

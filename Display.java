@@ -12,6 +12,7 @@ public class Display extends JComponent{
     private double screenHeight;
     private Font font1 = new Font("SansSerif", Font.BOLD, 25);
     private Font font2 = new Font("SansSerif", Font.PLAIN, 10);
+    private DamagedBlock recentlyHit;
     //constructor method
     public Display(int w, int h, Game g,int s,double sw, double sh){
         super();
@@ -25,13 +26,21 @@ public class Display extends JComponent{
         scaleTextures(game.getTextures());
         screenWidth = sw;
         screenHeight = sh;
+        recentlyHit = null;
     }
-    
+    public void setRecentlyHit(DamagedBlock rh){
+        recentlyHit = rh;
+    }
     public void scaleTextures(ArrayList<Image> tempT){
         double s = game.getPlayerViewScale();
         System.out.println("Textures scaled to "+s+" x "+s);
+        int count = 0;
         for(Image i : tempT){
-            textures.add(i.getScaledInstance((int)s+1,(int)s+1,0));
+            if(count != 3)
+                textures.add(i.getScaledInstance((int)s+1,(int)s+1,0));
+            else
+                textures.add(i.getScaledInstance((int)s*2+1,(int)s*3+1,0));
+            count ++;
         }
     }
     //calls the draw method
@@ -99,8 +108,13 @@ public class Display extends JComponent{
                     }
                 }
             }
-            g.setColor(Color.RED);
-            g.fillRect((int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),(int)playerViewScale*game.getPlayerDimentions()[0],(int)playerViewScale*game.getPlayerDimentions()[1]);
+            if(recentlyHit != null){
+                g.setColor(new Color(50,50,50,(int)(255*(1-recentlyHit.getHealthPercent()))));
+                g.fillRect((int)(recentlyHit.getX()*playerViewScale)-(int)(viewBoxCords[0]%1*playerViewScale)+1,(int)(recentlyHit.getY()*playerViewScale)-(int)(viewBoxCords[1]%1*playerViewScale)+1,(int)playerViewScale,(int)playerViewScale);
+            }
+            //g.setColor(Color.RED);
+            //g.fillRect((int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),(int)playerViewScale*game.getPlayerDimentions()[0],(int)playerViewScale*game.getPlayerDimentions()[1]);
+            g.drawImage(textures.get(3),(int)((game.getPlayerCords()[0]-viewBoxCords[0])*playerViewScale),(int)((game.getPlayerCords()[1]-viewBoxCords[1])*playerViewScale),this);
             g.setColor(Color.BLACK);
             g.setFont(font2);
             g.drawString("X: "+game.getPlayerCords()[0]+" Y: "+game.getPlayerCords()[1],20,20);
