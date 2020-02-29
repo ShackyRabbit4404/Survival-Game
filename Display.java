@@ -134,13 +134,13 @@ public class Display extends JComponent{
             if(game.isInvenVisible()){
                 int rowLength = 10;
                 g.setColor(new Color(100,100,100,180));
-                g.fillRect((int)(0.05*viewPlane.length*playerViewScale),(int)(0.06*viewPlane[0].length*playerViewScale),(int)(0.9*viewPlane.length*playerViewScale),(int)(0.7*viewPlane[0].length*playerViewScale));
+                g.fillRect((int)(0.05*screenWidth),(int)(0.06*screenHeight),(int)(0.9*screenWidth),(int)(0.7*screenHeight));
                 g.setColor(Color.WHITE);
                 int count = 0; 
                 for(Item i: game.getPlayerInventory()){
                     if(i!=null){
-                        g.drawImage(textures.get(i.getTextureNum()),(int)(0.07*viewPlane.length*playerViewScale)+(int)((count%rowLength)*0.04*viewPlane.length*playerViewScale),(int)(0.07*viewPlane.length*playerViewScale)+(int)((int)(count/rowLength)*0.03*viewPlane.length*playerViewScale),this);
-                        g.drawString("x"+i.getCount(),(int)(0.1*viewPlane.length*playerViewScale)+(int)((count%rowLength)*0.04*viewPlane.length*playerViewScale),(int)(0.085*viewPlane.length*playerViewScale)+(int)((int)(count/rowLength)*0.03*viewPlane.length*playerViewScale));
+                        g.drawImage(textures.get(i.getTextureNum()),(int)(0.07*screenWidth)+(int)((count%rowLength)*0.04*screenWidth),(int)(0.08*screenHeight)+(int)((int)(count/rowLength)*0.03*screenHeight),this);
+                        g.drawString("x"+i.getCount(),(int)(0.1*screenWidth)+(int)((count%rowLength)*0.04*screenWidth),(int)(0.085*screenHeight)+(int)((int)(count/rowLength)*0.03*screenHeight));
                         count++;
                     }
                 }
